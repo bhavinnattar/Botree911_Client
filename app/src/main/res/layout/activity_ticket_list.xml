@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_ticket_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/pad_10">
+
+    <ImageView
+        android:id="@+id/title_image"
+        android:layout_width="@dimen/pad_60"
+        android:layout_height="@dimen/pad_60"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="@dimen/pad_10"
+        android:paddingTop="@dimen/pad_10"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/title_login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pad_60"
+        android:layout_toRightOf="@+id/title_image"
+        android:gravity="right|center_vertical"
+        android:text="@string/all_tickets"
+        android:paddingRight="@dimen/pad_12"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textStyle="bold"
+        android:textColor="@color/colorGreen"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGreen"
+        android:layout_below="@+id/title_image"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/pad_8"
+        android:src="@drawable/add"
+        app:elevation="@dimen/pad_5"
+        app:backgroundTint="@color/colorGreen"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        app:pressedTranslationZ="@dimen/pad_8" />
+
+    <com.srx.widget.PullToLoadView
+        android:id="@+id/pullToLoadView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_image"
+        android:layout_marginTop="@dimen/pad_5"/>
+</RelativeLayout>

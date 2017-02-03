@@ -312,7 +312,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Goo
                 user.put("password", params[1]);
 
                 jsonObject.put("user",user);
-                jsonObject.put("fcm_token", "sadfsfdggd");
+                jsonObject.put("fcm_token", PreferenceUtility.getAccessToken(mContext));
                 jsonObject.put("device_type", Constant.device_type);
 
                 responseString = jsonParser.makeHttpRequest(mContext, Constant.loginURL, "POST", jsonObject, param);
@@ -339,7 +339,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Goo
 
                         boolean isSuccess = jsonObject.getBoolean("status");
                         String message = jsonObject.getString("message");
-
+                        Log.d("Status", ""+isSuccess);
                         if(isSuccess){
                             JSONObject data = jsonObject.getJSONObject("data");
                             if(data != null){
@@ -353,6 +353,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Goo
                                 PreferenceUtility.saveAccessToken(mContext, accessToken);
                                 PreferenceUtility.saveUserEmail(mContext, userEmail);
                                 PreferenceUtility.saveUserName(mContext, firstName+" "+lastName);
+                                PreferenceUtility.saveIsLogin(mContext, true);
 
                                 Intent intent = new Intent(mContext, ProjectListActivity.class);
                                 startActivity(intent);

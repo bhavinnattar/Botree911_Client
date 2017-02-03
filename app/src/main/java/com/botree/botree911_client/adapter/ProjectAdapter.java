@@ -15,7 +15,7 @@ import java.util.List;
  * Created by bhavin on 2/2/17.
  */
 
-public class ProjectAdapter extends RecyclerView.Adapter<CellHolder> {
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectCellHolder> {
 
         List<Project> mList;
         Context mContext;
@@ -26,14 +26,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<CellHolder> {
         }
 
         @Override
-        public CellHolder onCreateViewHolder(ViewGroup viewGroup, final int i) {
+        public ProjectCellHolder onCreateViewHolder(ViewGroup viewGroup, final int i) {
             final View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.project_row, viewGroup, false);
 
-            return new CellHolder(view);
+            return new ProjectCellHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(CellHolder holder, int i) {
+        public void onBindViewHolder(ProjectCellHolder holder, int i) {
 
             try{
 

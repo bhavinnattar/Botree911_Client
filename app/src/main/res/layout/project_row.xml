@@ -10,9 +10,9 @@
         android:layout_gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="2dp"
-        card_view:contentPadding="8dp">
+        android:layout_margin="@dimen/pad_5"
+        card_view:cardCornerRadius="@dimen/pad_2"
+        card_view:contentPadding="@dimen/pad_8">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -20,29 +20,39 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:padding="5dp"
-                android:layout_alignParentTop="true"/>
+                android:padding="@dimen/pad_5"
+                android:layout_alignParentTop="true"
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <TextView
                 android:id="@+id/tv_description"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:layout_below="@+id/tv_title"/>
+                android:padding="@dimen/pad_5"
+                android:layout_below="@+id/tv_title"
+                android:textAppearance="@android:style/TextAppearance.Small"/>
 
             <TextView
                 android:id="@+id/teamTv_member"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:layout_below="@+id/tv_title"
+                android:padding="@dimen/pad_5"
+                android:layout_below="@+id/tv_description"
                 android:textSize="10sp"
                 android:layout_alignParentRight="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pad_5"
+                android:text="No. of Team Members:"
+                android:textStyle="bold"
+                android:layout_toLeftOf="@+id/teamTv_member"
+                android:layout_below="@+id/tv_description"
+                android:textSize="10sp" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

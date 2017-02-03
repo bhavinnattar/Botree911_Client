@@ -9,4 +9,10 @@
     <string name="user_email">User Email</string>
     <string name="password">Password</string>
     <string name="project_list">Project List</string>
+    <string name="all_tickets">All Tickets</string>
+    <string name="create_ticket">Create Ticket</string>
+    <string name="ticketname">Enter Ticket Name</string>
+    <string name="enter_description">Enter description</string>
+    <string name="ticketname_error">Please enter ticket name</string>
+    <string name="ticket_description_error">Please enter description</string>
 </resources>

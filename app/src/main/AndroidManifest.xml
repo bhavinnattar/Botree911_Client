@@ -33,7 +33,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activity.ProjectListActivity"></activity>
+        <activity android:name=".activity.ProjectListActivity" />
+        <activity android:name=".activity.TicketListActivity" />
+        <activity android:name=".activity.TicketCreateActivity"></activity>
     </application>
 
 </manifest>

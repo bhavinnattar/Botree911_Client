@@ -10,4 +10,7 @@
     <dimen name="pad_16">16dp</dimen>
     <dimen name="pad_5">5dp</dimen>
     <dimen name="pad_60">60dp</dimen>
+    <dimen name="pad_2">2dp</dimen>
+    <dimen name="pad_12">12dp</dimen>
+    <dimen name="pad_14">14dp</dimen>
 </resources>

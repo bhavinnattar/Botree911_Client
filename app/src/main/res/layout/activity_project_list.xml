@@ -17,14 +17,24 @@
     <TextView
         android:id="@+id/title_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/pad_60"
         android:layout_toRightOf="@+id/title_image"
-        android:layout_marginTop="@dimen/pad_16"
-        android:gravity="right"
+        android:layout_toLeftOf="@+id/logout_image"
+        android:gravity="right|center_vertical"
         android:text="@string/project_list"
+        android:paddingRight="@dimen/pad_12"
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:textStyle="bold"
         android:textColor="@color/colorGreen"/>
+
+    <ImageView
+        android:id="@+id/logout_image"
+        android:layout_width="@dimen/pad_60"
+        android:layout_height="@dimen/pad_60"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/pad_14"
+        android:src="@drawable/logout"/>
 
     <LinearLayout
         android:layout_width="match_parent"

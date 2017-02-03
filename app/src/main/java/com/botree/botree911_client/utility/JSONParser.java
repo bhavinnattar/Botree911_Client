@@ -68,9 +68,6 @@ public class JSONParser {
         } else if (method.equals("GET")) {
             // request method is GET
 
-            params.put("Licensee","1");
-            params.put("UI","Android");
-
             StringBuilder sbParams = new StringBuilder();
             int i = 0;
             for (String key : params.keySet()) {

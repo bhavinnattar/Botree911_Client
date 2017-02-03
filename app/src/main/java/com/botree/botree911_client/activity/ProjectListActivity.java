@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.botree.botree911_client.R;
@@ -18,7 +19,9 @@ import com.botree.botree911_client.adapter.ProjectAdapter;
 import com.botree.botree911_client.model.Project;
 import com.botree.botree911_client.utility.Constant;
 import com.botree.botree911_client.utility.JSONParser;
+import com.botree.botree911_client.utility.PreferenceUtility;
 import com.botree.botree911_client.utility.RecyclerItemClickListener;
+import com.botree.botree911_client.utility.Utility;
 import com.srx.widget.PullCallback;
 import com.srx.widget.PullToLoadView;
 
@@ -32,7 +35,7 @@ import java.util.List;
 public class ProjectListActivity extends Activity implements View.OnClickListener{
 
     Context mContext;
-
+    ImageView ivLogout;
 
     private PullToLoadView mPullToLoadView;
     private ProjectAdapter mAdapter;
@@ -58,6 +61,7 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
 
         mContext = this;
 
+        ivLogout = (ImageView) findViewById(R.id.logout_image);
         mPullToLoadView = (PullToLoadView) findViewById(R.id.pullToLoadView);
 
         mRecyclerView = mPullToLoadView.getRecyclerView();
@@ -76,12 +80,19 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
 
     void initElements(){
 
+        ivLogout.setOnClickListener(this);
+
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(mContext, mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         // do whatever
                         try{
 
+                            Project project = mList.get(position);
+
+                            Intent intent = new Intent(mContext, TicketListActivity.class);
+                            intent.putExtra("projectid", project.getId());
+                            startActivity(intent);
 
                         }catch (Exception e){
                             e.printStackTrace();
@@ -144,9 +155,18 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
             }
         });
 
-        new getAllProjects().execute();
+
 
     }// End of initElements()
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mList.clear();
+        new getAllProjects().execute();
+
+    }// End of onResume()
 
     void displayProgress(){
 
@@ -169,12 +189,29 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
 
         switch (v.getId()){
 
+            case R.id.logout_image:
+                logout();
+                break;
+
             default:
                 break;
 
         }
 
     }// End of onClick()
+
+    void logout(){
+
+        PreferenceUtility.saveAccessToken(mContext, "");
+        PreferenceUtility.saveUserName(mContext, "");
+        PreferenceUtility.saveUserEmail(mContext, "");
+        PreferenceUtility.saveIsLogin(mContext, false);
+
+        Intent intent = new Intent(mContext, LoginActivity.class);
+        startActivity(intent);
+        finish();
+
+    }// End of logout()
 
     class getAllProjects extends AsyncTask<String, String, String> {
 
@@ -185,6 +222,7 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
         protected void onPreExecute() {
             super.onPreExecute();
             mJsonParser = new JSONParser();
+            displayProgress();
 //            if(currentPoint == 1 && isRefresh){
 //                progressDialog.show();
 //            }

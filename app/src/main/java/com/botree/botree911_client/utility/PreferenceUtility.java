@@ -11,6 +11,7 @@ public class PreferenceUtility {
 
     static String prefName = "botree911";
     static String accesstoken = "accesstoken";
+    static String islogin = "islogin";
     static String email = "email";
     static String username = "username";
     static String fcmid = "fcmid";
@@ -23,6 +24,23 @@ public class PreferenceUtility {
         return pref;
 
     }// End of getPreference()
+
+    public static void saveIsLogin(Context mContext, boolean isLogin){
+
+        SharedPreferences pref = getPreference(mContext);
+        SharedPreferences.Editor prefEditor = pref.edit();
+
+        prefEditor.putBoolean(islogin, isLogin);
+        prefEditor.commit();
+
+    }// End of saveIsLogin()
+
+    public static boolean getIsLogin(Context mContext){
+
+        SharedPreferences pref = getPreference(mContext);
+        return pref.getBoolean(islogin, false);
+
+    }// End of getIsLogin()
 
     public static void saveAccessToken(Context mContext, String accessToken){
 

@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.botree.botree911_client.R;
 import com.botree.botree911_client.activity.LoginActivity;
+import com.botree.botree911_client.utility.PreferenceUtility;
 
 public class SplashActivity extends Activity {
 
@@ -49,9 +50,15 @@ public class SplashActivity extends Activity {
 
     void nextActivity(){
 
-        Intent intent = new Intent(mContext, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        if(PreferenceUtility.getIsLogin(mContext)){
+            Intent intent = new Intent(mContext, ProjectListActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }// End of nextActivity()
 
