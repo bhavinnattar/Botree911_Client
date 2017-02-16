@@ -10,9 +10,11 @@
         android:layout_gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/pad_5"
-        card_view:cardCornerRadius="@dimen/pad_2"
-        card_view:contentPadding="@dimen/pad_8">
+        android:layout_marginLeft="@dimen/pad_8"
+        android:layout_marginRight="@dimen/pad_8"
+        android:layout_marginTop="@dimen/pad_5"
+        android:layout_marginBottom="@dimen/pad_5"
+        card_view:cardCornerRadius="@dimen/pad_2">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -23,38 +25,151 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:padding="@dimen/pad_5"
+                android:paddingTop="@dimen/pad_3"
+                android:paddingBottom="@dimen/pad_3"
+                android:paddingLeft="@dimen/pad_5"
+                android:paddingRight="@dimen/pad_5"
+                android:layout_marginTop="@dimen/pad_5"
                 android:layout_alignParentTop="true"
-                android:textAppearance="@android:style/TextAppearance.Medium"/>
+                android:ellipsize="end"
+                android:layout_alignParentLeft="true"
+                android:maxLines="1"
+                style="@style/SmallTextBold"/>
 
             <TextView
                 android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/pad_5"
+                android:paddingTop="@dimen/pad_3"
+                android:paddingBottom="@dimen/pad_3"
+                android:paddingLeft="@dimen/pad_8"
+                android:paddingRight="@dimen/pad_8"
                 android:layout_below="@+id/tv_title"
-                android:textAppearance="@android:style/TextAppearance.Small"/>
+                android:layout_marginBottom="@dimen/pad_8"
+                android:ellipsize="end"
+                android:maxLines="1"
+                style="@style/SmallTextSimple"/>
 
-            <TextView
-                android:id="@+id/tv_status"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/pad_5"
                 android:layout_below="@+id/tv_description"
-                android:textSize="10sp"
-                android:layout_alignParentRight="true" />
+                android:paddingTop="@dimen/pad_8"
+                android:paddingBottom="@dimen/pad_8"
+                android:background="@color/colorGreyLight">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/pad_5"
-                android:text="Status:"
-                android:textStyle="bold"
-                android:layout_toLeftOf="@+id/tv_status"
-                android:layout_below="@+id/tv_description"
-                android:textSize="10sp" />
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/pad_20"
+                    android:text="Jan, 1 2017"
+                    android:gravity="center"
+                    style="@style/SmallTextSimple"
+                    android:layout_marginRight="@dimen/pad_5"
+                    android:layout_marginLeft="@dimen/pad_3"
+                    android:layout_alignParentRight="true" />
+
+                <LinearLayout
+                    android:layout_width="@dimen/pad_1"
+                    android:layout_height="@dimen/pad_20"
+                    android:layout_toLeftOf="@+id/iv_Date"
+                    android:background="@color/colorGrey"/>
+
+                <ImageView
+                    android:id="@+id/iv_Date"
+                    android:layout_width="@dimen/pad_16"
+                    android:layout_height="@dimen/pad_20"
+                    android:layout_marginLeft="@dimen/pad_5"
+                    android:src="@drawable/calender"
+                    android:layout_toLeftOf="@+id/tv_status"/>
+
+
+                <ImageView
+                    android:id="@+id/iv_Assignee"
+                    android:layout_width="@dimen/pad_16"
+                    android:layout_height="@dimen/pad_16"
+                    android:layout_marginLeft="@dimen/pad_5"
+                    android:src="@drawable/assignee"
+                    android:layout_alignParentLeft="true"/>
+
+                <TextView
+                    android:id="@+id/tv_Assignee"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/pad_20"
+                    android:layout_marginRight="@dimen/pad_5"
+                    android:layout_marginLeft="@dimen/pad_3"
+                    android:layout_toRightOf="@+id/iv_Assignee"
+                    android:layout_toLeftOf="@+id/lnr_history"
+                    style="@style/SmallTextSimple"/>
+
+                <LinearLayout
+                    android:layout_width="@dimen/pad_1"
+                    android:layout_height="@dimen/pad_20"
+                    android:layout_toLeftOf="@+id/lnr_history"
+                    android:background="@color/colorGrey"/>
+
+                <LinearLayout
+                    android:id="@+id/lnr_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_toLeftOf="@+id/lnr_Comment">
+
+                    <ImageView
+                        android:id="@+id/iv_History"
+                        android:layout_width="@dimen/pad_16"
+                        android:layout_height="@dimen/pad_20"
+                        android:layout_marginLeft="@dimen/pad_5"
+                        android:src="@drawable/clock"
+                        android:layout_toLeftOf="@+id/tv_History"/>
+
+                    <TextView
+                        android:id="@+id/tv_History"
+                        android:layout_width="@dimen/pad_20"
+                        android:layout_height="@dimen/pad_20"
+                        android:layout_marginLeft="@dimen/pad_3"
+                        android:layout_marginRight="@dimen/pad_3"
+                        android:text="3"
+                        android:gravity="center"
+                        style="@style/SmallTextSimple" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/pad_1"
+                    android:layout_height="@dimen/pad_20"
+                    android:layout_toLeftOf="@+id/lnr_Comment"
+                    android:background="@color/colorGrey"/>
+
+                <LinearLayout
+                    android:id="@+id/lnr_Comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_toLeftOf="@+id/iv_Date">
+
+                    <ImageView
+                        android:id="@+id/iv_Comment"
+                        android:layout_width="@dimen/pad_16"
+                        android:layout_height="@dimen/pad_20"
+                        android:layout_marginLeft="@dimen/pad_8"
+                        android:src="@drawable/comments"/>
+
+                    <TextView
+                        android:id="@+id/tv_Comment"
+                        android:layout_width="@dimen/pad_20"
+                        android:layout_height="@dimen/pad_20"
+                        android:layout_marginLeft="@dimen/pad_3"
+                        android:layout_marginRight="@dimen/pad_3"
+                        android:text="5"
+                        android:gravity="center"
+                        style="@style/SmallTextSimple" />
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
 
 </LinearLayout>

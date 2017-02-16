@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/slide_lnr_AllProjects"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/nav_menu_size_padding"
+            android:paddingTop="@dimen/nav_menu_size_padding">
+
+            <ImageView
+                android:layout_width="@dimen/nav_menu_image_size"
+                android:layout_height="@dimen/nav_menu_image_size"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/nav_menu_size_margin"
+                android:src="@drawable/ticket"
+                android:padding="@dimen/pad_4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/nav_menu_size_margin"
+                android:text="All Tickets"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/slide_lnr_AllUnassigned"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/nav_menu_size_padding"
+            android:paddingTop="@dimen/nav_menu_size_padding">
+
+            <ImageView
+                android:layout_width="@dimen/nav_menu_image_size"
+                android:layout_height="@dimen/nav_menu_image_size"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/nav_menu_size_margin"
+                android:src="@drawable/unassigned"
+                android:padding="@dimen/pad_3"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/nav_menu_size_margin"
+                android:text="Unassigned Tickets"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/slide_lnr_AllNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/nav_menu_size_padding"
+            android:paddingTop="@dimen/nav_menu_size_padding">
+
+            <ImageView
+                android:layout_width="@dimen/nav_menu_image_size"
+                android:layout_height="@dimen/nav_menu_image_size"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/nav_menu_size_margin"
+                android:src="@drawable/notification"
+                android:padding="@dimen/pad_5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/nav_menu_size_margin"
+                android:text="Notifications"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/slide_lnr_Logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/nav_menu_size_padding"
+            android:paddingTop="@dimen/nav_menu_size_padding">
+
+            <ImageView
+                android:layout_width="@dimen/nav_menu_image_size"
+                android:layout_height="@dimen/nav_menu_image_size"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/nav_menu_size_margin"
+                android:src="@drawable/logout"
+                android:padding="@dimen/pad_5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/nav_menu_size_margin"
+                android:text="Logout"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>

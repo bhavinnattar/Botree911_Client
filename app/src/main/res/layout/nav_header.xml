@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@color/colorBlueLight"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/pad_16"
+    android:gravity="center_vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="@dimen/pad_50"
+        android:layout_height="@dimen/pad_50"
+        android:src="@drawable/user"
+        android:layout_marginLeft="@dimen/pad_10"
+        android:layout_marginRight="@dimen/pad_5"
+        app:civ_border_width="0dp"
+        app:civ_border_color="@color/colorBlue"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="@dimen/nav_header_height_padding"
+        android:paddingBottom="@dimen/nav_header_height_padding"
+        android:paddingLeft="@dimen/nav_header_height_name_padding"
+        android:paddingRight="@dimen/nav_header_height_name_padding">
+
+        <TextView
+            android:id="@+id/textView"
+            android:text="Client"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:padding="@dimen/pad_2"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:text="client@gmail.com"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/pad_2"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:text="BoTree Technologies Pvt. Ltd."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/pad_2"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+</LinearLayout>

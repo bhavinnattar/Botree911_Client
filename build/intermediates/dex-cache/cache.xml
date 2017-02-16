@@ -21,6 +21,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/2.1.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a2af9c72ccaa4c5c049b500ca6ea664a4ce1f7d4">
+        <dex dex="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/pre-dexed/debug/de.hdodenhof-circleimageview-2.1.0_0c484d912986cd7f5b83018c04e03e20b33e143d.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.1.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -57,12 +66,30 @@
     </item>
     <item
         is-multidex="false"
+        jar="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/exploded-aar/com.astuetz/pagerslidingtabstrip/1.0.1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7912610ed96381c25c36d986eba422731b9641b6">
+        <dex dex="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/pre-dexed/debug/com.astuetz-pagerslidingtabstrip-1.0.1_6869041e390f996d9cd5c69c4d5c3951a840d094.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.1.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
         <dex dex="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-25.1.0_f275f2a38810820108e46676528e793dd8d9172d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/exploded-aar/pl.droidsonroids.gif/android-gif-drawable/1.1.17/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7f8c6fd043a9c060badf3fa9b77e51c422af0a8b">
+        <dex dex="/root/AndroidStudioProjects/Botree911_Client/app/build/intermediates/pre-dexed/debug/pl.droidsonroids.gif-android-gif-drawable-1.1.17_eca05b0e2e63f21ab62cbea9bd2d8be353761ebb.jar" />
     </item>
     <item
         is-multidex="false"

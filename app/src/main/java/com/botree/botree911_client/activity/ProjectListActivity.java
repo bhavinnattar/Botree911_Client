@@ -4,15 +4,24 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.botree.botree911_client.R;
 import com.botree.botree911_client.adapter.ProjectAdapter;
@@ -32,10 +41,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProjectListActivity extends Activity implements View.OnClickListener{
+public class ProjectListActivity extends AppCompatActivity implements View.OnClickListener{
 
     Context mContext;
-    ImageView ivLogout;
 
     private PullToLoadView mPullToLoadView;
     private ProjectAdapter mAdapter;
@@ -45,23 +53,52 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
     ProgressDialog mProgressDialog;
 //    List<ArticleObject> allData;
     RecyclerView mRecyclerView;
-    List<Project> mList;
 
+    private DrawerLayout mDrawerLayout;
+    private LinearLayout lnrAllProjects, lnrLogout;
+    ImageView ivMenu;
+    TextView tvTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_list);
+
+        setCustomActionBar();
 
         getElements();
         initElements();
 
     }// End of onCreate()
 
+    void setCustomActionBar(){
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        ActionBar.LayoutParams p = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        p.gravity = Gravity.CENTER;
+
+        View actionbar = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        ivMenu = (ImageView) actionbar.findViewById(R.id.iv_menu);
+        tvTitle = (TextView) actionbar.findViewById(R.id.actionbar_title);
+
+        ivMenu.setOnClickListener(this);
+        tvTitle.setText(getString(R.string.project_list));
+
+        getSupportActionBar().setCustomView(actionbar);
+    } // End of setCustomActionBar()
+
+    void getData(){
+
+        mAdapter = new ProjectAdapter(mContext, Constant.allProjects);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
     void getElements(){
 
         mContext = this;
 
-        ivLogout = (ImageView) findViewById(R.id.logout_image);
         mPullToLoadView = (PullToLoadView) findViewById(R.id.pullToLoadView);
 
         mRecyclerView = mPullToLoadView.getRecyclerView();
@@ -69,18 +106,23 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
         LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        lnrAllProjects = (LinearLayout) findViewById(R.id.slide_lnr_AllProjects);
+        lnrLogout = (LinearLayout) findViewById(R.id.slide_lnr_Logout);
+
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setCancelable(false);
         mProgressDialog.setIndeterminate(true);
 
-        mList = new ArrayList<Project>();
+        Constant.allProjects.trimToSize();
 
     }// End of getElements()
 
     void initElements(){
 
-        ivLogout.setOnClickListener(this);
+        lnrAllProjects.setOnClickListener(this);
+        lnrLogout.setOnClickListener(this);
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(mContext, mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
@@ -88,11 +130,11 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
                         // do whatever
                         try{
 
-                            Project project = mList.get(position);
-
-                            Intent intent = new Intent(mContext, TicketListActivity.class);
-                            intent.putExtra("projectid", project.getId());
-                            startActivity(intent);
+//                            Project project = Constant.allProjects.get(position);
+//
+//                            Intent intent = new Intent(mContext, TicketListActivity.class);
+//                            intent.putExtra("projectid", project.getId());
+//                            startActivity(intent);
 
                         }catch (Exception e){
                             e.printStackTrace();
@@ -160,11 +202,23 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
     }// End of initElements()
 
     @Override
+    public void onBackPressed() {
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.closeDrawers();
+        }else{
+            super.onBackPressed();
+        }
+    }// End of onBackPressed()
+
+    @Override
     protected void onResume() {
         super.onResume();
 
-        mList.clear();
-        new getAllProjects().execute();
+        Constant.allProjects.clear();
+        Constant.allProjects.trimToSize();
+//        new getAllProjects().execute();
+
+        getData();
 
     }// End of onResume()
 
@@ -189,7 +243,21 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
 
         switch (v.getId()){
 
-            case R.id.logout_image:
+            case R.id.iv_menu:
+                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mDrawerLayout.closeDrawers();
+                }else{
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                }
+                break;
+
+            case R.id.slide_lnr_AllProjects:
+                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mDrawerLayout.closeDrawers();
+                }
+                break;
+
+            case R.id.slide_lnr_Logout:
                 logout();
                 break;
 
@@ -271,11 +339,11 @@ public class ProjectListActivity extends Activity implements View.OnClickListene
                             project.setDescription(""+jsonObject.getString("description"));
                             project.setNoOfTeam(""+jsonObject.getInt("total_member"));
 
-                            mList.add(project);
+                            Constant.allProjects.add(project);
 
                         }
 
-                        mAdapter = new ProjectAdapter(mContext, mList);
+                        mAdapter = new ProjectAdapter(mContext, Constant.allProjects);
                         mRecyclerView.setAdapter(mAdapter);
                     }
 

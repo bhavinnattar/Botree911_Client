@@ -13,11 +13,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.botree.botree911_client.R;
@@ -42,7 +49,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class LoginActivity extends Activity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     Context mContext;
@@ -62,25 +69,50 @@ public class LoginActivity extends Activity implements View.OnClickListener, Goo
     ProgressDialog mProgressDialog;
     loginAsync mLoginAsync;
 
+    ImageView ivMenu;
+    TextView tvTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        setCustomActionBar();
 
         getElements();
         initElements();
 
     }// End of onCreate()
 
+    void setCustomActionBar(){
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        ActionBar.LayoutParams p = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        p.gravity = Gravity.CENTER;
+
+        View actionbar = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        ivMenu = (ImageView) actionbar.findViewById(R.id.iv_menu);
+        tvTitle = (TextView) actionbar.findViewById(R.id.actionbar_title);
+
+//        ivMenu.setOnClickListener(this);
+        ivMenu.setVisibility(View.INVISIBLE);
+        tvTitle.setText(getString(R.string.signin));
+
+        getSupportActionBar().setCustomView(actionbar);
+    } // End of setCustomActionBar()
+
     @Override
     protected void onResume() {
         super.onResume();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, requestArray, requestCode);
-        } else {
-            Log.e("onResume", "onResume");
-            settingsrequest();
-        }
+//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, requestArray, requestCode);
+//        } else {
+//            Log.e("onResume", "onResume");
+//            settingsrequest();
+//        }
     }// End of onResume()
 
     @Override
@@ -204,7 +236,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, Goo
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    login();
+//                    login();
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     return true;
                 }
                 return false;
@@ -250,6 +284,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Goo
 
     void forgotPassword(){
 
+        Utility.displayMessage(mContext, "New Password sent to Registered Email");
 
     }// End of forgotpassword()
 
@@ -273,16 +308,25 @@ public class LoginActivity extends Activity implements View.OnClickListener, Goo
 
         if(fieldValidation(etUserEmail.getText().toString().trim(),
                 etPassword.getText().toString().trim())){
-            if(Utility.isOnline(mContext)){
 
-                if(mLoginAsync == null || mLoginAsync.getStatus() == AsyncTask.Status.FINISHED){
-                    mLoginAsync = new loginAsync();
-                    mLoginAsync.execute(etUserEmail.getText().toString().trim(), etPassword.getText().toString().trim());
-                }
+            PreferenceUtility.saveUserEmail(mContext, "client@gmail.com");
+            PreferenceUtility.saveUserName(mContext, "John"+" "+"");
+            PreferenceUtility.saveIsLogin(mContext, true);
 
-            }else{
-                Utility.displayMessage(mContext, getString(R.string.internet_error));
-            }
+            Intent intent = new Intent(mContext, TicketCreateActivity.class);
+            startActivity(intent);
+            finish();
+
+//            if(Utility.isOnline(mContext)){
+//
+//                if(mLoginAsync == null || mLoginAsync.getStatus() == AsyncTask.Status.FINISHED){
+//                    mLoginAsync = new loginAsync();
+//                    mLoginAsync.execute(etUserEmail.getText().toString().trim(), etPassword.getText().toString().trim());
+//                }
+//
+//            }else{
+//                Utility.displayMessage(mContext, getString(R.string.internet_error));
+//            }
         }
 
     }// End of login()

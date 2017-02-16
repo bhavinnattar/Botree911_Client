@@ -12,7 +12,8 @@ public class Ticket {
     private String description;
     private String status;
     private String created_at;
-    private String updated_at;
+    private String raised_by;
+    private String assingee;
 
     public String getId() {
         return id;
@@ -62,12 +63,19 @@ public class Ticket {
         this.created_at = created_at;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getRaised_by() {
+        return raised_by;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setRaised_by(String raised_by) {
+        this.raised_by = raised_by;
     }
 
+    public String getAssingee() {
+        return assingee;
+    }
+
+    public void setAssingee(String assingee) {
+        this.assingee = assingee;
+    }
 }

@@ -26,6 +26,16 @@
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.ProjectListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TicketListActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TicketCreateActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ProjectInfoActivity"
+            android:screenOrientation="portrait"/>
+
         // ...................Services and Broadcast Receivers..........................//
         <service android:name=".notification.MyFirebaseInstanceIDService">
             <intent-filter>
@@ -33,9 +43,15 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activity.ProjectListActivity" />
-        <activity android:name=".activity.TicketListActivity" />
-        <activity android:name=".activity.TicketCreateActivity"></activity>
+        <service
+            android:name=".notification.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <activity android:name=".activity.TicketInfoTabActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

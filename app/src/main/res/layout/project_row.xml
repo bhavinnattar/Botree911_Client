@@ -10,9 +10,12 @@
         android:layout_gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/pad_5"
+        android:layout_marginLeft="@dimen/pad_8"
+        android:layout_marginRight="@dimen/pad_8"
+        android:layout_marginTop="@dimen/pad_5"
+        android:layout_marginBottom="@dimen/pad_5"
         card_view:cardCornerRadius="@dimen/pad_2"
-        card_view:contentPadding="@dimen/pad_8">
+        card_view:contentPadding="@dimen/pad_5">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -23,9 +26,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:padding="@dimen/pad_5"
+                android:padding="@dimen/pad_3"
                 android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/tv_StartDate"
+                android:layout_marginRight="@dimen/pad_5"
                 android:textAppearance="@android:style/TextAppearance.Medium"/>
+
+            <TextView
+                android:id="@+id/tv_StartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pad_3"
+                android:layout_alignParentRight="true"
+                android:textAppearance="@android:style/TextAppearance.Small"/>
 
             <TextView
                 android:id="@+id/tv_description"
@@ -36,23 +49,71 @@
                 android:textAppearance="@android:style/TextAppearance.Small"/>
 
             <TextView
+                android:id="@+id/tv_title_TicketStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pad_5"
+                android:text="Ticket Status"
+                android:textStyle="bold"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/tv_description"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+
+            <LinearLayout
+                android:id="@+id/lnr_TicketStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/pad_5"
+                android:gravity="right"
+                android:layout_toRightOf="@+id/tv_title_TicketStatus"
+                android:layout_below="@+id/tv_description"/>
+
+            <TextView
                 android:id="@+id/teamTv_member"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pad_5"
-                android:layout_below="@+id/tv_description"
-                android:textSize="10sp"
+                android:visibility="gone"
+                android:layout_below="@+id/tv_title_TicketStatus"
+                android:textAppearance="@android:style/TextAppearance.Small"
                 android:layout_alignParentRight="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pad_5"
-                android:text="No. of Team Members:"
+                android:text="Developers:"
                 android:textStyle="bold"
-                android:layout_toLeftOf="@+id/teamTv_member"
-                android:layout_below="@+id/tv_description"
-                android:textSize="10sp" />
+                android:layout_alignParentLeft="true"
+                android:visibility="gone"
+                android:layout_below="@+id/tv_title_TicketStatus"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+
+            <TextView
+                android:text="Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/teamTv_member"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/pad_10"
+                android:padding="@dimen/pad_5"
+                android:textColor="@color/colorBlue"
+                android:id="@+id/tv_Details" />
+
+            <TextView
+                android:text="All Tickets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/teamTv_member"
+                android:layout_toLeftOf="@+id/tv_Details"
+                android:layout_marginRight="@dimen/pad_8"
+                android:layout_marginTop="@dimen/pad_10"
+                android:padding="@dimen/pad_5"
+                android:textColor="@color/colorBlue"
+                android:id="@+id/tv_AllTickets" />
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

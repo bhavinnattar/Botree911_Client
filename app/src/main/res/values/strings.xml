@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Botree911</string>
+    <string name="app_name">BoTree911</string>
     <string name="please_wait">Please wait...</string>
     <string name="internet_error">Internet connection is not available.</string>
     <string name="email_error">Please enter valid email address</string>
@@ -8,11 +8,21 @@
     <string name="login_details">LOGIN DETAILS</string>
     <string name="user_email">User Email</string>
     <string name="password">Password</string>
+    <string name="signin">Sign In</string>
     <string name="project_list">Project List</string>
-    <string name="all_tickets">All Tickets</string>
-    <string name="create_ticket">Create Ticket</string>
+    <string name="all_tickets">Tickets</string>
+    <string name="create_ticket">Add Ticket</string>
+    <string name="skip">Skip</string>
     <string name="ticketname">Enter Ticket Name</string>
     <string name="enter_description">Enter description</string>
     <string name="ticketname_error">Please enter ticket name</string>
     <string name="ticket_description_error">Please enter description</string>
+    <string name="project_info">Project Info</string>
+    <string name="ticket_info">Ticket Info</string>
+    <string name="all_comments">All Comments</string>
+    <string name="all_history">All History</string>
+    <string name="ticket_details">Ticket Details</string>
+    <string name="summary">Summary</string>
+    <string name="description">Description</string>
+    <string name="add_comment">Add Comment</string>
 </resources>

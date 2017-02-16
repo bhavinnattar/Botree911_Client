@@ -1,6 +1,7 @@
 package com.botree.botree911_client.utility;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
@@ -13,6 +14,16 @@ import java.util.regex.Pattern;
  */
 
 public class Utility {
+
+    /**
+     * method is used for converting dp to px.
+     *
+     * @param dp
+     * @return px
+     */
+    public static int dpToPx(int dp) {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+    }
 
     /**
      * method is used for checking internet is active or not

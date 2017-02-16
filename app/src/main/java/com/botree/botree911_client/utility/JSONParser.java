@@ -33,7 +33,40 @@ public class JSONParser {
     public String makeHttpRequest(Context mContext, String url, String method,
                                   JSONObject jsonObject, HashMap<String, String> params) {
 
-        if (method.equals("POST")) {
+        if (method.equals("PATCH")) {
+            // request method is PATCH
+            try {
+                urlObj = new URL(url);
+
+                conn = (HttpURLConnection) urlObj.openConnection();
+
+                conn.setDoOutput(true);
+
+                conn.setRequestMethod("PATCH");
+
+                conn.setRequestProperty("Accept-Charset", charset);
+
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+
+                conn.setRequestProperty("Expect", "100-continue");
+                conn.setRequestProperty("access_token", PreferenceUtility.getAccessToken(mContext));
+
+                conn.setReadTimeout(connectionTimeOut);
+                conn.setConnectTimeout(connectionTimeOut);
+
+                conn.connect();
+
+                Log.d("Json", jsonObject.toString());
+                wr = new DataOutputStream(conn.getOutputStream());
+                wr.writeBytes(jsonObject.toString());
+                wr.flush();
+                wr.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if (method.equals("POST")) {
             // request method is POST
             try {
                 urlObj = new URL(url);

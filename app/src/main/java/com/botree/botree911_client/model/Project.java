@@ -14,13 +14,16 @@ public class Project {
     private String team_leader = "";
     private String team_member = "";
     private String noOfTeam = "";
+    private String spocPerson = "";
+    private String ticketStatus = "";
+    private String startDate = "";
 
-    public String getNoOfTeam() {
-        return noOfTeam;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setNoOfTeam(String noOfTeam) {
-        this.noOfTeam = noOfTeam;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
     public String getId() {
@@ -79,4 +82,27 @@ public class Project {
         this.team_member = team_member;
     }
 
+    public String getNoOfTeam() {
+        return noOfTeam;
+    }
+
+    public void setNoOfTeam(String noOfTeam) {
+        this.noOfTeam = noOfTeam;
+    }
+
+    public String getSpocPerson() {
+        return spocPerson;
+    }
+
+    public void setSpocPerson(String spocPerson) {
+        this.spocPerson = spocPerson;
+    }
+
+    public String getTicketStatus() {
+        return ticketStatus;
+    }
+
+    public void setTicketStatus(String ticketStatus) {
+        this.ticketStatus = ticketStatus;
+    }
 }

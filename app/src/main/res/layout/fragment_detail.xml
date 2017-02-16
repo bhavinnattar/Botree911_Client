@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:padding="@dimen/pad_10">
+
+    <RelativeLayout
+        android:id="@+id/activity_ticket_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/tv_Projects"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/pad_3"
+            android:paddingTop="@dimen/pad_5"
+            android:text="Project:"
+            style="@style/SmallTextBold"/>
+
+        <Spinner
+            android:id="@+id/spnrProjects"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_Projects"
+            android:layout_marginBottom="@dimen/pad_3"
+            android:layout_marginTop="@dimen/pad_3"
+            android:background="@drawable/rounded_background_grey"
+            android:padding="@dimen/pad_5"
+            android:spinnerMode="dropdown" />
+
+
+        <TextView
+            android:id="@+id/tv_Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spnrProjects"
+            android:layout_marginTop="@dimen/pad_5"
+            android:paddingTop="@dimen/pad_5"
+            android:text="Issue Type:"
+            style="@style/SmallTextBold"/>
+
+        <Spinner
+            android:id="@+id/spnrStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_Status"
+            android:layout_marginBottom="@dimen/pad_8"
+            android:layout_marginTop="@dimen/pad_5"
+            android:background="@drawable/rounded_background_grey"
+            android:clickable="false"
+            android:padding="@dimen/pad_5"/>
+
+
+        <TextView
+            android:id="@+id/tv_Summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spnrStatus"
+            android:layout_marginTop="@dimen/pad_5"
+            android:paddingTop="@dimen/pad_5"
+            android:paddingBottom="@dimen/pad_3"
+            style="@style/SmallTextBold" />
+
+        <EditText
+            android:id="@+id/et_TicketName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_Summary"
+            android:background="@drawable/rounded_background_grey"
+            android:inputType="text"
+            style="@style/SmallTextSimple"
+            android:padding="@dimen/pad_10" />
+
+        <TextView
+            android:id="@+id/tv_Desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_TicketName"
+            android:layout_marginTop="@dimen/pad_5"
+            android:paddingTop="@dimen/pad_5"
+            android:paddingBottom="@dimen/pad_3"
+            style="@style/SmallTextBold" />
+
+        <EditText
+            android:id="@+id/et_TicketDescription"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pad_120"
+            android:layout_below="@+id/tv_Desc"
+            android:background="@drawable/rounded_background_grey"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            style="@style/SmallTextSimple"
+            android:padding="@dimen/pad_8" />
+
+        <TextView
+            android:id="@+id/tvEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/pad_10"
+            android:layout_marginTop="@dimen/pad_16"
+            android:background="@drawable/click_button"
+            android:layout_below="@+id/et_TicketDescription"
+            android:gravity="center"
+            android:padding="@dimen/pad_10"
+            android:text="Edit"
+            android:textColor="@color/colorWhite"
+            style="@style/SmallTextBold"/>
+
+    </RelativeLayout>
+</ScrollView>
