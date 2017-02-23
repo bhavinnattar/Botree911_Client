@@ -3,7 +3,6 @@ package com.botree.botree911_client.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,18 +11,18 @@ import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.botree.botree911_client.R;
+import com.botree.botree911_client.activity.TicketCreateActivity;
 import com.botree.botree911_client.model.Project;
+import com.botree.botree911_client.model.ProjectOld;
 import com.botree.botree911_client.model.Status;
 import com.botree.botree911_client.model.Ticket;
 import com.botree.botree911_client.utility.Constant;
@@ -47,6 +46,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
     ArrayList<Status> allStatus;
     ArrayList<String> allProjectName;
+    ArrayList<Project> allProject;
 
     Spinner spnrProjects, spnrStatus;
     EditText etTicketName, etDescription;
@@ -84,6 +84,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
         allStatus = new ArrayList<Status>();
         allProjectName = new ArrayList<String>();
+        allProject = new ArrayList<Project>();
         ticket= new Ticket();
 
         SpannableStringBuilder builderSummary = new SpannableStringBuilder();
@@ -113,32 +114,9 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
         tvEditTicket.setOnClickListener(this);
 
-        getProjectNames();
-
-//        new getAllStatus().execute();
+        new getAllProject().execute();
 
     }// End of initElements()
-
-    void getProjectNames(){
-
-        for(int i = 0; i < Constant.allProjects.size(); i++){
-            Project project = Constant.allProjects.get(i);
-            allProjectName.add(project.getName());
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_row, R.id.tv_title, allProjectName);
-        spnrProjects.setAdapter(arrayAdapter);
-
-        ArrayList<String> displayStatus = new ArrayList<String>();
-        displayStatus.add("Pending");
-        displayStatus.add("InProgress");
-        displayStatus.add("Resolved");
-        displayStatus.add("Closed");
-
-        ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_row, R.id.tv_title, displayStatus);
-        spnrStatus.setAdapter(statusAdapter);
-
-    }// getProjectNames()
 
     void getInfo(){
 
@@ -197,22 +175,43 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
     void editTicket(){
 
-//        if(fieldValidation(etTicketName.getText().toString().trim(),
-//                etDescription.getText().toString().trim())){
-//            if(Utility.isOnline(mContext)){
-////                String project_Id = getIntent().getStringExtra("projectid");
-//                new EditTicket().execute(Constant.allProjects.get(spnrProjects.getSelectedItemPosition()).getId(),
-//                        etTicketName.getText().toString().trim(),
-//                        etDescription.getText().toString().trim(),
-//                        allStatus.get(spnrStatus.getSelectedItemPosition()).getStatusValue());
-//            }else{
-//                Utility.displayMessage(mContext, getString(R.string.internet_error));
-//            }
-//        }
-
-        Utility.displayMessage(mContext, "Ticket Updated Succesfully");
+        if(fieldValidation(etTicketName.getText().toString().trim(),
+                etDescription.getText().toString().trim())){
+            if(Utility.isOnline(mContext)){
+                new EditTicket().execute(allProject.get(spnrProjects.getSelectedItemPosition()).getId(),
+                        etTicketName.getText().toString().trim(),
+                        etDescription.getText().toString().trim(),
+                        allStatus.get(spnrStatus.getSelectedItemPosition()).getStatusValue());
+            }else{
+                Utility.displayMessage(mContext, getString(R.string.internet_error));
+            }
+        }
 
     }// End of editTicket()
+
+    int getCurrentStatus(){
+        int index = 0;
+        for(int i=0; i< allStatus.size(); i++){
+            Status status = allStatus.get(i);
+            if(status.getStatusValue().equalsIgnoreCase(ticket.getStatus_id())){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    int getCurrentProject(){
+        int index = 0;
+        for(int i=0; i< allProject.size(); i++){
+            Project project = allProject.get(i);
+            if(project.getId().equalsIgnoreCase(ticket.getProject_id())){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
 
     class getAllStatus extends AsyncTask<String, String, String> {
 
@@ -222,7 +221,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            displayProgress();
             mJsonParser = new JSONParser();
         }
 
@@ -273,8 +271,84 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
                             allStatus.add(status1);
                         }
 
-                        ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, displayStatus);
+                        ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_row, R.id.tv_title, displayStatus);
                         spnrStatus.setAdapter(statusAdapter);
+
+                        spnrStatus.setSelection(getCurrentStatus());
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+            closeProgress();
+        }
+    }// End of getAllStatus
+
+    class getAllProject extends AsyncTask<String, String, String> {
+
+        String response;
+        JSONParser mJsonParser;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mJsonParser = new JSONParser();
+            displayProgress();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try{
+
+                HashMap<String, String> param = new HashMap<>();
+                JSONObject jsonObject = new JSONObject();
+
+                response = mJsonParser.makeHttpRequest(mContext, Constant.allProjectURL, "GET", jsonObject, param);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            if(s!=null && s.length() > 0){
+
+                try{
+
+                    JSONObject jObject = new JSONObject(s);
+                    boolean status = jObject.getBoolean("status");
+
+                    if(status){
+
+                        JSONObject data = jObject.getJSONObject("data");
+                        JSONArray allStatusobj = data.getJSONArray("projects");
+                        ArrayList<String> displayProject = new ArrayList<String>();
+
+                        for(int i=0; i < allStatusobj.length(); i++){
+                            JSONObject jsonObject = allStatusobj.getJSONObject(i);
+
+                            Project project = new Project();
+
+                            project.setId(""+jsonObject.getInt("project_id"));
+                            project.setName(""+jsonObject.getString("name"));
+
+                            displayProject.add(jsonObject.getString("name"));
+
+                            allProject.add(project);
+                        }
+
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_row, R.id.tv_title, displayProject);
+                        spnrProjects.setAdapter(arrayAdapter);
+
+                        spnrProjects.setSelection(getCurrentProject());
                     }
 
                 }catch (Exception e){
@@ -283,10 +357,9 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
             }
 
-            closeProgress();
-
+            new getAllStatus().execute();
         }
-    }// End of getAllStatus
+    }// End of getAllProject
 
     class EditTicket extends AsyncTask<String, String, String> {
 
@@ -342,7 +415,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
                     if(status){
                         Utility.displayMessage(mContext, message);
-                        ((Activity)mContext).finish();
                     }else{
                         Utility.displayMessage(mContext, message);
                     }

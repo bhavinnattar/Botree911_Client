@@ -2,8 +2,10 @@ package com.botree.botree911_client.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -14,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,8 +24,10 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,9 +50,15 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.joda.time.DateTimeZone;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+
+import br.com.forusers.heinsinputdialogs.HeinsInputDialog;
+import br.com.forusers.heinsinputdialogs.interfaces.OnInputStringListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -71,6 +82,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     ImageView ivMenu;
     TextView tvTitle;
+
+    Dialog forgotDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +217,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mContext = this;
 
+        JodaTimeAndroid.init(this);
+
         etUserEmail = (EditText) findViewById(R.id.et_email);
         etPassword = (EditText) findViewById(R.id.et_password);
         txtLogIn = (TextView) findViewById(R.id.txt_Login);
@@ -257,7 +272,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     void closeProgress(){
 
-        if(mProgressDialog != null && mProgressDialog.isShowing()){
+        if(mProgressDialog != null && !LoginActivity.this.isFinishing() && mProgressDialog.isShowing()){
             mProgressDialog.dismiss();
         }
 
@@ -284,9 +299,47 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     void forgotPassword(){
 
-        Utility.displayMessage(mContext, "New Password sent to Registered Email");
+        showDialog();
 
     }// End of forgotpassword()
+
+    public void showDialog(){
+        forgotDialog = new Dialog(mContext);
+        forgotDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        forgotDialog.setCancelable(false);
+        forgotDialog.setContentView(R.layout.layout_forgetpassword);
+
+        final EditText et_Email = (EditText) forgotDialog.findViewById(R.id.et_Email);
+
+        TextView tvOk = (TextView) forgotDialog.findViewById(R.id.tv_Ok);
+        TextView tvCancel = (TextView) forgotDialog.findViewById(R.id.tv_Cancel);
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forgotDialog.dismiss();
+            }
+        });
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Utility.isOnline(mContext)){
+                    String email = et_Email.getText().toString().trim();
+                    if(Utility.isEmailValid(email)){
+                        new ForgetPassword().execute(email);
+                    }else{
+                        et_Email.setError(getString(R.string.email_error));
+                    }
+                }else{
+                    Utility.displayMessage(mContext, getString(R.string.internet_error));
+                }
+            }
+        });
+
+        forgotDialog.show();
+
+    }// End of showDialog()
 
     boolean fieldValidation(String email, String password){
 
@@ -313,23 +366,81 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             PreferenceUtility.saveUserName(mContext, "John"+" "+"");
             PreferenceUtility.saveIsLogin(mContext, true);
 
-            Intent intent = new Intent(mContext, TicketCreateActivity.class);
-            startActivity(intent);
-            finish();
+            if(Utility.isOnline(mContext)){
 
-//            if(Utility.isOnline(mContext)){
-//
-//                if(mLoginAsync == null || mLoginAsync.getStatus() == AsyncTask.Status.FINISHED){
-//                    mLoginAsync = new loginAsync();
-//                    mLoginAsync.execute(etUserEmail.getText().toString().trim(), etPassword.getText().toString().trim());
-//                }
-//
-//            }else{
-//                Utility.displayMessage(mContext, getString(R.string.internet_error));
-//            }
+                if(mLoginAsync == null || mLoginAsync.getStatus() == AsyncTask.Status.FINISHED){
+                    mLoginAsync = new loginAsync();
+                    mLoginAsync.execute(etUserEmail.getText().toString().trim(), etPassword.getText().toString().trim());
+                }
+
+            }else{
+                Utility.displayMessage(mContext, getString(R.string.internet_error));
+            }
         }
 
     }// End of login()
+
+    class ForgetPassword extends AsyncTask<String, String, String>{
+
+        String responseString = "";
+        JSONParser jsonParser;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            displayProgress();
+            jsonParser = new JSONParser();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+
+                JSONObject jsonObject = new JSONObject();
+                HashMap<String, String> param = new HashMap<>();
+
+                jsonObject.put("device_token", Utility.getDeviceId(mContext));
+                jsonObject.put("email", params[0]);
+
+                responseString = jsonParser.makeHttpRequest(mContext, Constant.forgotPasswordURL, "POST", jsonObject, param);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            closeProgress();
+            if(s != null && s.length() > 0){
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(s);
+
+                    if (jsonObject != null) {
+
+                        boolean isSuccess = jsonObject.getBoolean("status");
+                        String message = jsonObject.getString("message");
+                        Log.d("Status", "" + isSuccess);
+                        if (isSuccess) {
+                            Utility.displayMessage(mContext, message);
+                            if(forgotDialog != null){
+                                forgotDialog.dismiss();
+                            }
+                        }else{
+                            Utility.displayMessage(mContext, message);
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     class loginAsync extends AsyncTask<String, String, String>{
 
@@ -356,8 +467,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 user.put("password", params[1]);
 
                 jsonObject.put("user",user);
-                jsonObject.put("fcm_token", PreferenceUtility.getAccessToken(mContext));
+                jsonObject.put("device_token", Utility.getDeviceId(mContext));
                 jsonObject.put("device_type", Constant.device_type);
+                jsonObject.put("location", DateTimeZone.getDefault().getID());
 
                 responseString = jsonParser.makeHttpRequest(mContext, Constant.loginURL, "POST", jsonObject, param);
 
@@ -371,7 +483,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
+            closeProgress();
             if(s != null && s.length() > 0){
                 Log.d("response", s);
 
@@ -390,16 +502,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 JSONObject user = data.getJSONObject("user");
 
                                 String userEmail = user.getString("email");
+                                String userId = user.getString("user_id");
                                 String accessToken = user.getString("access_token");
                                 String firstName = user.getString("first_name");
                                 String lastName = user.getString("last_name");
 
+                                PreferenceUtility.saveUserId(mContext, userId);
                                 PreferenceUtility.saveAccessToken(mContext, accessToken);
                                 PreferenceUtility.saveUserEmail(mContext, userEmail);
                                 PreferenceUtility.saveUserName(mContext, firstName+" "+lastName);
                                 PreferenceUtility.saveIsLogin(mContext, true);
 
-                                Intent intent = new Intent(mContext, ProjectListActivity.class);
+                                Intent intent = new Intent(mContext, TicketCreateActivity.class);
                                 startActivity(intent);
                                 finish();
 
@@ -417,8 +531,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }else{
                 Utility.displayMessage(mContext, getString(R.string.server_error));
             }
-
-            closeProgress();
         }
     }// End of loginAsync
 

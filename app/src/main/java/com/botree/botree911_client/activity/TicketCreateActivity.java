@@ -1,12 +1,10 @@
 package com.botree.botree911_client.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +12,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -31,6 +28,7 @@ import android.widget.TextView;
 
 import com.botree.botree911_client.R;
 import com.botree.botree911_client.model.Project;
+import com.botree.botree911_client.model.ProjectOld;
 import com.botree.botree911_client.model.Status;
 import com.botree.botree911_client.utility.Constant;
 import com.botree.botree911_client.utility.JSONParser;
@@ -42,7 +40,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class TicketCreateActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -51,6 +48,7 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
 
     ArrayList<Status> allStatus;
     ArrayList<String> allProjectName;
+    ArrayList<Project> allProject;
 
     Spinner spnrProjects, spnrStatus;
     TextView tvCreate;
@@ -61,6 +59,7 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
 
     ImageView ivMenu;
     TextView tvTitle, tvSkip, tvSummary, tvDescription;
+    TextView tvUserName, tvEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +112,12 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
         lnrNotification = (LinearLayout) findViewById(R.id.slide_lnr_AllNotifications);
         lnrLogout = (LinearLayout) findViewById(R.id.slide_lnr_Logout);
 
+        tvUserName = (TextView) findViewById(R.id.tv_UserName);
+        tvEmail = (TextView) findViewById(R.id.tv_UserEmail);
+
+        tvUserName.setText(PreferenceUtility.getUserName(mContext));
+        tvEmail.setText(PreferenceUtility.getUserEmail(mContext));
+
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setCancelable(false);
@@ -120,6 +125,7 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
 
         allStatus = new ArrayList<Status>();
         allProjectName = new ArrayList<String>();
+        allProject = new ArrayList<Project>();
 
         SpannableStringBuilder builderSummary = new SpannableStringBuilder();
         SpannableStringBuilder builderDesc = new SpannableStringBuilder();
@@ -152,9 +158,7 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
 
         tvCreate.setOnClickListener(this);
 
-        getProjectNames();
-
-//        new getAllStatus().execute();
+        new getAllProject().execute();
 
     }// End of initElements()
 
@@ -167,28 +171,6 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
             allTickets("pending");
         }
     }// End of onBackPressed()
-
-    void getProjectNames(){
-
-        for(int i=0; i < Constant.allProjects.size(); i++){
-            Project project = Constant.allProjects.get(i);
-            allProjectName.add(project.getName());
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_row, R.id.tv_title, allProjectName);
-        spnrProjects.setAdapter(arrayAdapter);
-
-        ArrayList<String> displayStatus = new ArrayList<String>();
-        displayStatus.add("Pending");
-        displayStatus.add("InProgress");
-        displayStatus.add("Resolved");
-        displayStatus.add("Closed");
-
-        spnrStatus.setEnabled(false);
-        ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, displayStatus);
-        spnrStatus.setAdapter(statusAdapter);
-
-    }// getProjectNames()
 
     void displayProgress(){
 
@@ -238,12 +220,14 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
                 if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
                     mDrawerLayout.closeDrawers();
                 }
+                notification();
                 break;
 
             case R.id.slide_lnr_AllProjects:
                 if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
                     mDrawerLayout.closeDrawers();
                 }
+                allTickets("pending");
                 break;
 
             case R.id.slide_lnr_Logout:
@@ -256,9 +240,13 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
 
     }// End of onClick()
 
+    void notification(){
+        Intent intent = new Intent(mContext, NotificationListActivity.class);
+        startActivity(intent);
+    }
+
     void allTickets(String status){
 
-        Log.d("Status Created", status);
         Intent intent = new Intent(mContext, TicketListActivity.class);
         intent.putExtra("status", status);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -286,14 +274,11 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
         if(fieldValidation(etTicketName.getText().toString().trim(),
                 etDescription.getText().toString().trim())){
             if(Utility.isOnline(mContext)){
-//                String project_Id = getIntent().getStringExtra("projectid");
-//                new createTicket().execute(Constant.allProjects.get(spnrProjects.getSelectedItemPosition()).getId(),
-//                        etTicketName.getText().toString().trim(),
-//                        etDescription.getText().toString().trim(),
-//                        allStatus.get(spnrStatus.getSelectedItemPosition()).getStatusValue());
-
-                Utility.displayMessage(mContext, "Ticket Created Successfully.");
-                allTickets("pending");
+                String project_Id = allProject.get(spnrProjects.getSelectedItemPosition()).getId();
+                new createTicket().execute(project_Id,
+                        etTicketName.getText().toString().trim(),
+                        etDescription.getText().toString().trim(),
+                        allStatus.get(0).getStatusValue());
             }else{
                 Utility.displayMessage(mContext, getString(R.string.internet_error));
             }
@@ -324,6 +309,8 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            Constant.allStatus.clear();
+            Constant.allStatus.trimToSize();
             mJsonParser = new JSONParser();
         }
 
@@ -372,9 +359,10 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
                             displayStatus.add(jsonObject.getString("name"));
 
                             allStatus.add(status1);
+                            Constant.allStatus.add(status1);
                         }
 
-                        ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, displayStatus);
+                        ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_row, R.id.tv_title, displayStatus);
                         spnrStatus.setAdapter(statusAdapter);
                     }
 
@@ -383,9 +371,85 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
                 }
 
             }
-
+            closeProgress();
         }
     }// End of getAllStatus
+
+    class getAllProject extends AsyncTask<String, String, String> {
+
+        String response;
+        JSONParser mJsonParser;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Constant.allProject.clear();
+            Constant.allProject.trimToSize();
+            mJsonParser = new JSONParser();
+            displayProgress();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try{
+
+                HashMap<String, String> param = new HashMap<>();
+                JSONObject jsonObject = new JSONObject();
+
+                response = mJsonParser.makeHttpRequest(mContext, Constant.allProjectURL, "GET", jsonObject, param);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            if(s!=null && s.length() > 0){
+
+                try{
+
+                    JSONObject jObject = new JSONObject(s);
+                    boolean status = jObject.getBoolean("status");
+
+                    if(status){
+
+                        JSONObject data = jObject.getJSONObject("data");
+                        JSONArray allStatusobj = data.getJSONArray("projects");
+                        ArrayList<String> displayProject = new ArrayList<String>();
+
+                        for(int i=0; i < allStatusobj.length(); i++){
+                            JSONObject jsonObject = allStatusobj.getJSONObject(i);
+
+                            Project project = new Project();
+
+                            project.setId(""+jsonObject.getInt("project_id"));
+                            project.setName(""+jsonObject.getString("name"));
+
+                            displayProject.add(jsonObject.getString("name"));
+
+                            allProject.add(project);
+                            Constant.allProject.add(project);
+                        }
+
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, R.layout.spinner_row, R.id.tv_title, displayProject);
+                        spnrProjects.setAdapter(arrayAdapter);
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            new getAllStatus().execute();
+        }
+    }// End of getAllProject
 
     class createTicket extends AsyncTask<String, String, String> {
 
@@ -440,7 +504,7 @@ public class TicketCreateActivity extends AppCompatActivity implements View.OnCl
 
                     if(status){
                         Utility.displayMessage(mContext, message);
-                        finish();
+                        allTickets("pending");
                     }else{
                         Utility.displayMessage(mContext, message);
                     }

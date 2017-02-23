@@ -22,6 +22,7 @@ android {
 allprojects {
     repositories {
         mavenCentral()
+        maven { url "http://dl.bintray.com/hellmannmaicon/android" }
     }
 }
 
@@ -41,6 +42,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'br.com.forusers.heinsinputdialogs:input-dialogs-library:0.1.4'
+    compile 'net.danlew:android.joda:2.9.5.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

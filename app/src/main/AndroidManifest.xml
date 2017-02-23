@@ -35,6 +35,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.ProjectInfoActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NotificationListActivity"
+            android:screenOrientation="portrait"/>
 
         // ...................Services and Broadcast Receivers..........................//
         <service android:name=".notification.MyFirebaseInstanceIDService">

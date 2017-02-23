@@ -8,8 +8,7 @@ public class History {
 
     private String id;
     private String user_name;
-    private String last_status;
-    private String current_status;
+    private String message;
     private String date_time;
 
     public String getId() {
@@ -28,20 +27,12 @@ public class History {
         this.user_name = user_name;
     }
 
-    public String getLast_status() {
-        return last_status;
+    public String getMessage() {
+        return message;
     }
 
-    public void setLast_status(String last_status) {
-        this.last_status = last_status;
-    }
-
-    public String getCurrent_status() {
-        return current_status;
-    }
-
-    public void setCurrent_status(String current_status) {
-        this.current_status = current_status;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getDate_time() {

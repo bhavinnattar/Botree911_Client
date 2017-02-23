@@ -11,6 +11,7 @@
     <string name="signin">Sign In</string>
     <string name="project_list">Project List</string>
     <string name="all_tickets">Tickets</string>
+    <string name="notification">Notifications</string>
     <string name="create_ticket">Add Ticket</string>
     <string name="skip">Skip</string>
     <string name="ticketname">Enter Ticket Name</string>
@@ -20,9 +21,11 @@
     <string name="project_info">Project Info</string>
     <string name="ticket_info">Ticket Info</string>
     <string name="all_comments">All Comments</string>
+    <string name="error_comment">Please enter comment</string>
     <string name="all_history">All History</string>
     <string name="ticket_details">Ticket Details</string>
     <string name="summary">Summary</string>
     <string name="description">Description</string>
     <string name="add_comment">Add Comment</string>
+    <string name="forgotpassword">Forgot Password</string>
 </resources>

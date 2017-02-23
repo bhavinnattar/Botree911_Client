@@ -1,19 +1,18 @@
 package com.botree.botree911_client.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.botree.botree911_client.R;
-import com.botree.botree911_client.activity.ProjectInfoActivity;
 import com.botree.botree911_client.model.Comment;
-import com.botree.botree911_client.model.Project;
+import com.botree.botree911_client.utility.PreferenceUtility;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -24,10 +23,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentCellHolder> {
 
         List<Comment> mList;
         Context mContext;
-
+        SimpleDateFormat serverFormat, displayFormat;
         public CommentAdapter(Context mContext, List<Comment> mList) {
             this.mContext = mContext;
             this.mList = mList;
+            serverFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
+            displayFormat = new SimpleDateFormat("MM-dd-yyyy");
         }
 
         @Override
@@ -46,12 +47,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentCellHolder> {
 
                 holder.tvComment.setText(comment.getComment());
                 holder.tvCreatedBy.setText(comment.getUser_name());
-                holder.tvDateTime.setText(comment.getDate_time());
+
+                try {
+                    holder.tvDateTime.setText(displayFormat.format(serverFormat.parse(comment.getDate_time())));
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.getView().getLayoutParams();
 
-                Log.d("getUser_name" +" "+i,""+comment.getUser_name());
-                if(comment.getUser_name().equalsIgnoreCase("Bhavin Nattar")){
+                if(comment.getUser_id().equalsIgnoreCase(PreferenceUtility.getUserId(mContext
+                ))){
                     params.leftMargin = 70;
                 }else{
                     params.rightMargin = 70;

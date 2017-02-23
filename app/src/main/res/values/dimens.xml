@@ -47,6 +47,12 @@
     <dimen name="sp_13">13sp</dimen>
     <dimen name="sp_14">14sp</dimen>
     <dimen name="pad_4">4dp</dimen>
+    <dimen name="pad_125">125dp</dimen>
+    <dimen name="pad_115">115dp</dimen>
+    <dimen name="pad_75">75dp</dimen>
+    <dimen name="pad_72">72dp</dimen>
+    <dimen name="pad_115dp">115dp</dimen>
+    <dimen name="pad_70">70dp</dimen>
 
 
 </resources>

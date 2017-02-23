@@ -42,7 +42,7 @@ public class TicketInfoTabActivity extends AppCompatActivity implements View.OnC
     private DrawerLayout mDrawerLayout;
     private LinearLayout lnrAllTickets, lnrUnassigned, lnrNotification, lnrLogout;
     ImageView ivMenu;
-    TextView tvTitle;
+    TextView tvTitle, tvUserName, tvEmail;
 
     TicketDetailAdapter pagerAdapter;
     ViewPager viewPager;
@@ -91,6 +91,11 @@ public class TicketInfoTabActivity extends AppCompatActivity implements View.OnC
         lnrNotification = (LinearLayout) findViewById(R.id.slide_lnr_AllNotifications);
         lnrLogout = (LinearLayout) findViewById(R.id.slide_lnr_Logout);
 
+        tvUserName = (TextView) findViewById(R.id.tv_UserName);
+        tvEmail = (TextView) findViewById(R.id.tv_UserEmail);
+
+        tvUserName.setText(PreferenceUtility.getUserName(mContext));
+        tvEmail.setText(PreferenceUtility.getUserEmail(mContext));
 
         pagerAdapter = new TicketDetailAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -181,6 +186,7 @@ public class TicketInfoTabActivity extends AppCompatActivity implements View.OnC
                 if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
                     mDrawerLayout.closeDrawers();
                 }
+                notification();
                 break;
 
             case R.id.slide_lnr_AllProjects:
@@ -200,6 +206,11 @@ public class TicketInfoTabActivity extends AppCompatActivity implements View.OnC
                 break;
 
         }
+    }// End of onClick()
+
+    void notification(){
+        Intent intent = new Intent(mContext, NotificationListActivity.class);
+        startActivity(intent);
     }
 
     void allTickets(String status){
@@ -207,7 +218,6 @@ public class TicketInfoTabActivity extends AppCompatActivity implements View.OnC
         Log.d("Status Created", status);
         Intent intent = new Intent(mContext, TicketListActivity.class);
         intent.putExtra("status", status);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
 

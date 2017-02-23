@@ -4,24 +4,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.botree.botree911_client.R;
-import com.botree.botree911_client.activity.TicketListActivity;
 import com.botree.botree911_client.adapter.CommentAdapter;
-import com.botree.botree911_client.adapter.TicketAdapter;
 import com.botree.botree911_client.model.Comment;
-import com.botree.botree911_client.model.Ticket;
 import com.botree.botree911_client.utility.Constant;
 import com.botree.botree911_client.utility.JSONParser;
-import com.srx.widget.PullCallback;
+import com.botree.botree911_client.utility.Utility;
 import com.srx.widget.PullToLoadView;
 
 import org.json.JSONArray;
@@ -39,15 +36,14 @@ public class CommentsFragment extends Fragment {
 
     Context mContext;
 
-    private PullToLoadView mPullToLoadView;
     private CommentAdapter mAdapter;
-    private boolean isLoading = false;
-    private boolean isHasLoadedAll = false;
 
     ProgressDialog mProgressDialog;
-    //    List<ArticleObject> allData;
     RecyclerView mRecyclerView;
     List<Comment> mList;
+
+    EditText etComment;
+    ImageView ivSend;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,9 +60,10 @@ public class CommentsFragment extends Fragment {
 
         mContext = getActivity();
 
-        mPullToLoadView = (PullToLoadView) rootView.findViewById(R.id.pullToLoadView);
+        etComment = (EditText) rootView.findViewById(R.id.et_comment);
+        ivSend = (ImageView) rootView.findViewById(R.id.ivsend);
 
-        mRecyclerView = mPullToLoadView.getRecyclerView();
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
         LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
@@ -82,100 +79,36 @@ public class CommentsFragment extends Fragment {
 
     void initElements(){
 
-        mPullToLoadView.setPullCallback(new PullCallback() {
+        ivSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onLoadMore() {
-
-                mPullToLoadView.setComplete();
-                isLoading = false;
-
-//                if(dataObject.getStatus() == AsyncTask.Status.RUNNING || dataObject.getStatus() == AsyncTask.Status.PENDING){
-//                    mPullToLoadView.setComplete();
-//                    isLoading = false;
-//                }else{
-//                    currentPoint++;
-//                    dataObject = new getData();
-//                    dataObject.execute(""+currentPoint);
-//                }
-            }
-
-            @Override
-            public void onRefresh() {
-                if(mAdapter!=null) {
-                    mPullToLoadView.setComplete();
-                    isLoading = false;
-//                    isRefresh = false;
-//
-//                    if(dataObject.getStatus() == AsyncTask.Status.RUNNING || dataObject.getStatus() == AsyncTask.Status.PENDING){
-//                        mPullToLoadView.setComplete();
-//                        isLoading = false;
-//                    }else{
-//                        mAdapter.clear();
-//                        currentPoint = 1;
-//                        dataObject = new getData();
-//                        dataObject.execute(""+currentPoint);
-//                    }
-//
+            public void onClick(View v) {
+                if(Utility.isOnline(mContext)){
+                    if(fieldValidation()){
+                        new addComment().execute(etComment.getText().toString().trim());
+                    }
+                }else{
+                    Utility.displayMessage(mContext, getString(R.string.internet_error));
                 }
-            }
-
-            @Override
-            public boolean isLoading() {
-                Log.e("main activity", "main isLoading:" + isLoading);
-                return isLoading;
-            }
-
-            @Override
-            public boolean hasLoadedAllItems() {
-                return isHasLoadedAll;
             }
         });
 
     }// End of initElements()
 
-    void addData(){
+    boolean fieldValidation(){
 
-        Comment comment1=new Comment();
-        comment1.setId("1");
-        comment1.setUser_name("Bhavin Nattar");
-        comment1.setDate_time("Jan 12,2017");
-        comment1.setComment("Hello Please Send me Project Details");
-
-        Comment comment2=new Comment();
-        comment2.setId("2");
-        comment2.setUser_name("Piyush Sanepara");
-        comment2.setDate_time("Jan 12,2017");
-        comment2.setComment("ok Please Wait 5 Minutes");
-
-        Comment comment4=new Comment();
-        comment4.setId("4");
-        comment4.setUser_name("Dave Bukre");
-        comment4.setDate_time("Feb 12,2017");
-        comment4.setComment("This is a New Comment");
-
-        Comment comment5=new Comment();
-        comment5.setId("5");
-        comment5.setUser_name("Bhavin Nattar");
-        comment5.setDate_time("Feb 15,2017");
-        comment5.setComment("I am new Client");
-
-        mList.add(comment1);
-        mList.add(comment2);
-        mList.add(comment4);
-        mList.add(comment5);
-
-        mAdapter = new CommentAdapter(mContext, mList);
-        mRecyclerView.setAdapter(mAdapter);
-
-    }
+        if(!Utility.isValidString(etComment.getText().toString().trim())){
+            etComment.setError(getString(R.string.error_comment));
+            return false;
+        }
+        return true;
+    }// End of fieldValidation()
 
     @Override
     public void onResume() {
         super.onResume();
 
         mList.clear();
-        addData();
-//        new getAllComments().execute();
+        new getAllComments().execute();
 
     }// End of onResume()
 
@@ -205,11 +138,6 @@ public class CommentsFragment extends Fragment {
             super.onPreExecute();
             mJsonParser = new JSONParser();
             displayProgress();
-//            if(currentPoint == 1 && isRefresh){
-//                progressDialog.show();
-//            }
-//
-//            isLoading = true;
         }
 
         @Override
@@ -252,6 +180,7 @@ public class CommentsFragment extends Fragment {
 
                             Comment comment = new Comment();
                             comment.setId(""+jsonObject.getInt("id"));
+                            comment.setUser_id(""+jsonObject.getString("user_id"));
                             comment.setUser_name(""+jsonObject.getString("user_name"));
                             comment.setComment(""+jsonObject.getString("comment"));
                             comment.setDate_time(""+jsonObject.getString("date_time"));
@@ -270,14 +199,72 @@ public class CommentsFragment extends Fragment {
 
             }
 
-//            isHasLoadedAll = false;
-//            isLoading = false;
-//            mPullToLoadView.setComplete();
-
             closeProgress();
 
         }
 
     }// End of getData
+
+    class addComment extends AsyncTask<String, String, String>{
+
+        String response = null;
+        JSONParser mJsonParser;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mJsonParser = new JSONParser();
+            displayProgress();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+
+                HashMap<String, String> param = new HashMap<>();
+
+                JSONObject jsonObject = new JSONObject();
+                JSONObject ticket = new JSONObject();
+                ticket.put("description", params[0]);
+
+                jsonObject.put("ticket", ticket);
+                response = mJsonParser.makeHttpRequest(mContext,
+                        Constant.createTicketURL + "/" + Constant.selectedTicket.getId() + Constant.addCommentTicketURL,
+                        "POST", jsonObject, param);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s!=null && s.length() > 0){
+
+                    try{
+
+                        JSONObject jObject = new JSONObject(s);
+                        boolean status = jObject.getBoolean("status");
+                        String message = jObject.getString("message");
+                        if(status){
+                            etComment.setText("");
+                            Utility.displayMessage(mContext, message);
+                            mList.clear();
+                            new getAllComments().execute();
+                        }else{
+                            Utility.displayMessage(mContext, message);
+                        }
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            closeProgress();
+        }
+    }
 
 }

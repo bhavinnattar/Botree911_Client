@@ -4,12 +4,19 @@ package com.botree.botree911_client.notification;
  * Created by bhavin on 2/2/17.
  */
 
+import android.os.AsyncTask;
 import android.util.Log;
 
+import com.botree.botree911_client.utility.Constant;
+import com.botree.botree911_client.utility.JSONParser;
 import com.botree.botree911_client.utility.PreferenceUtility;
 import com.botree.botree911_client.utility.Utility;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * Copyright 2016 Google Inc. All Rights Reserved.
@@ -61,5 +68,46 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
         PreferenceUtility.saveFCMID(this, token);
+        new updateFCM().execute(token);
+    }
+
+    class updateFCM extends AsyncTask<String, String, String>{
+
+        String response = null;
+        JSONParser mJsonParser;
+        String deviceId;
+        @Override
+        protected void onPreExecute() {
+            mJsonParser = new JSONParser();
+            deviceId = Utility.getDeviceId(MyFirebaseInstanceIDService.this);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+
+                HashMap<String, String> param = new HashMap<>();
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("fcm_token", params[0]);
+                jsonObject.put("device_token",deviceId);
+                response = mJsonParser.makeHttpRequest(MyFirebaseInstanceIDService.this, Constant.updateFCMURL,
+                        "POST", jsonObject, param);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            if(s != null && s.length() > 0){
+                Log.d("Response", s);
+            }
+        }
     }
 }

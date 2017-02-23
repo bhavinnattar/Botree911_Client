@@ -37,13 +37,9 @@ public class HistoryFragment extends Fragment {
 
     Context mContext;
 
-    private PullToLoadView mPullToLoadView;
     private HistoryAdapter mAdapter;
-    private boolean isLoading = false;
-    private boolean isHasLoadedAll = false;
 
     ProgressDialog mProgressDialog;
-    //    List<ArticleObject> allData;
     RecyclerView mRecyclerView;
     List<History> mList;
 
@@ -62,9 +58,7 @@ public class HistoryFragment extends Fragment {
 
         mContext = getActivity();
 
-        mPullToLoadView = (PullToLoadView) rootView.findViewById(R.id.pullToLoadView);
-
-        mRecyclerView = mPullToLoadView.getRecyclerView();
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
         LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
@@ -80,113 +74,16 @@ public class HistoryFragment extends Fragment {
 
     void initElements(){
 
-        mPullToLoadView.setPullCallback(new PullCallback() {
-            @Override
-            public void onLoadMore() {
-
-                mPullToLoadView.setComplete();
-                isLoading = false;
-
-//                if(dataObject.getStatus() == AsyncTask.Status.RUNNING || dataObject.getStatus() == AsyncTask.Status.PENDING){
-//                    mPullToLoadView.setComplete();
-//                    isLoading = false;
-//                }else{
-//                    currentPoint++;
-//                    dataObject = new getData();
-//                    dataObject.execute(""+currentPoint);
-//                }
-            }
-
-            @Override
-            public void onRefresh() {
-                if(mAdapter!=null) {
-                    mPullToLoadView.setComplete();
-                    isLoading = false;
-//                    isRefresh = false;
-//
-//                    if(dataObject.getStatus() == AsyncTask.Status.RUNNING || dataObject.getStatus() == AsyncTask.Status.PENDING){
-//                        mPullToLoadView.setComplete();
-//                        isLoading = false;
-//                    }else{
-//                        mAdapter.clear();
-//                        currentPoint = 1;
-//                        dataObject = new getData();
-//                        dataObject.execute(""+currentPoint);
-//                    }
-//
-                }
-            }
-
-            @Override
-            public boolean isLoading() {
-                Log.e("main activity", "main isLoading:" + isLoading);
-                return isLoading;
-            }
-
-            @Override
-            public boolean hasLoadedAllItems() {
-                return isHasLoadedAll;
-            }
-        });
 
     }// End of initElements()
-
-    void addData(){
-
-        History history1=new History();
-        history1.setId("1");
-        history1.setUser_name("Bhavin Nattar");
-        history1.setCurrent_status("Pending");
-        history1.setLast_status("InProgress");
-        history1.setDate_time("Feb 14,2017");
-
-        History history2=new History();
-        history2.setId("2");
-        history2.setUser_name("Piyush Sanepara");
-        history2.setCurrent_status("closed");
-        history2.setLast_status("InProgress");
-        history2.setDate_time("Jan 10,2017");
-
-        History history3=new History();
-        history3.setId("3");
-        history3.setUser_name("Sadhu Rahul");
-        history3.setCurrent_status("InProgress");
-        history3.setLast_status("Pending");
-        history3.setDate_time("Dec 25,2016");
-
-        History history4=new History();
-        history4.setId("4");
-        history4.setUser_name("Bhavin Nattar");
-        history4.setCurrent_status("Resolved");
-        history4.setLast_status("Pending");
-        history4.setDate_time("Jan 20,2017");
-
-
-        History history5=new History();
-        history5.setId("5");
-        history5.setUser_name("Piyush Sanepara");
-        history5.setCurrent_status("InProgress");
-        history5.setLast_status("Pending");
-        history5.setDate_time("Jan 01,2017");
-
-        mList.add(history1);
-        mList.add(history2);
-        mList.add(history3);
-        mList.add(history4);
-        mList.add(history5);
-
-        mAdapter = new HistoryAdapter(mContext, mList);
-        mRecyclerView.setAdapter(mAdapter);
-
-    }
 
     @Override
     public void onResume() {
         super.onResume();
 
         mList.clear();
-        addData();
-//        new getAllHistory().execute();
+//        addData();
+        new getAllHistory().execute();
 
     }// End of onResume()
 
@@ -216,11 +113,6 @@ public class HistoryFragment extends Fragment {
             super.onPreExecute();
             mJsonParser = new JSONParser();
             displayProgress();
-//            if(currentPoint == 1 && isRefresh){
-//                progressDialog.show();
-//            }
-//
-//            isLoading = true;
         }
 
         @Override
@@ -256,19 +148,30 @@ public class HistoryFragment extends Fragment {
 
                     if(status){
                         JSONObject data = jObject.getJSONObject("data");
-                        JSONArray allObjects = data.getJSONArray("history");
+                        JSONArray allObjects = data.getJSONArray("ticket_history");
 
                         for(int i=0; i< allObjects.length(); i++){
                             JSONObject jsonObject = allObjects.getJSONObject(i);
 
-                            History history = new History();
-                            history.setId(""+jsonObject.getInt("id"));
-                            history.setUser_name(""+jsonObject.getString("user_name"));
-                            history.setLast_status(""+jsonObject.getString("last_status"));
-                            history.setCurrent_status(""+jsonObject.getString("current_status"));
-                            history.setDate_time(""+jsonObject.getString("date_time"));
+                            String id = ""+jsonObject.getInt("id");
+                            String username = ""+jsonObject.getString("user_name");
+                            String datetime = ""+jsonObject.getString("date_time");
 
-                            mList.add(history);
+                            JSONArray historyChange = jsonObject.getJSONArray("change_history");
+
+                            for(int j=0; j< historyChange.length(); j++){
+
+                                JSONObject jMessage = historyChange.getJSONObject(j);
+
+                                History history = new History();
+                                history.setId(id);
+                                history.setUser_name(username);
+                                history.setDate_time(datetime);
+                                history.setMessage(jMessage.getString("body"));
+
+                                mList.add(history);
+
+                            }
 
                         }
 
@@ -282,12 +185,7 @@ public class HistoryFragment extends Fragment {
 
             }
 
-//            isHasLoadedAll = false;
-//            isLoading = false;
-//            mPullToLoadView.setComplete();
-
             closeProgress();
-
         }
 
     }// End of getData

@@ -5,14 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.botree.botree911_client.fragment.ClosedFragment;
 import com.botree.botree911_client.fragment.CommentsFragment;
 import com.botree.botree911_client.fragment.DetailFragment;
 import com.botree.botree911_client.fragment.HistoryFragment;
-import com.botree.botree911_client.fragment.InProgressFragment;
-import com.botree.botree911_client.fragment.PendingFragment;
-import com.botree.botree911_client.fragment.ResolvedFragment;
-import com.botree.botree911_client.fragment.UnassignedFragment;
 
 /**
  * Created by bhavin on 9/2/17.

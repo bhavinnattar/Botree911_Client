@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -23,7 +24,18 @@ public class Utility {
      */
     public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
-    }
+    }// End of dpToPx()
+
+    /**
+     * method is used for converting dp to px.
+     *
+     * @param mContext
+     * @return deviceId
+     */
+    public static String getDeviceId(Context mContext) {
+        return Settings.Secure.getString(mContext.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+    }// End of getDeviceId
 
     /**
      * method is used for checking internet is active or not

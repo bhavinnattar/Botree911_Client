@@ -1,6 +1,5 @@
 package com.botree.botree911_client.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,17 +48,17 @@ public class ProjectInfoActivity extends AppCompatActivity implements View.OnCli
 
         lnrStatus = (LinearLayout) findViewById(R.id.lnr_TicketStatus);
 
-        name.setText(Constant.selectedProject.getName());
-        desc.setText(Constant.selectedProject.getDescription());
-        startDate.setText(Constant.selectedProject.getStartDate());
-        spocPerson.setText(Constant.selectedProject.getSpocPerson());
-        teamMember.setText(Constant.selectedProject.getNoOfTeam());
+        name.setText(Constant.selectedProjectOld.getName());
+        desc.setText(Constant.selectedProjectOld.getDescription());
+        startDate.setText(Constant.selectedProjectOld.getStartDate());
+        spocPerson.setText(Constant.selectedProjectOld.getSpocPerson());
+        teamMember.setText(Constant.selectedProjectOld.getNoOfTeam());
 
-        getClient(client, Constant.selectedProject.getClient());
-        getClient(projectManagers, Constant.selectedProject.getProject_manager());
-        getClient(teamLeader, Constant.selectedProject.getTeam_leader());
-        getClient(developer, Constant.selectedProject.getTeam_member());
-        getAllStatus(lnrStatus, Constant.selectedProject.getTicketStatus());
+        getClient(client, Constant.selectedProjectOld.getClient());
+        getClient(projectManagers, Constant.selectedProjectOld.getProject_manager());
+        getClient(teamLeader, Constant.selectedProjectOld.getTeam_leader());
+        getClient(developer, Constant.selectedProjectOld.getTeam_member());
+        getAllStatus(lnrStatus, Constant.selectedProjectOld.getTicketStatus());
     }
 
     void setCustomActionBar(){

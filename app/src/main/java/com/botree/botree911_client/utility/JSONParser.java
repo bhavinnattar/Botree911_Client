@@ -57,6 +57,7 @@ public class JSONParser {
 
                 conn.connect();
 
+                Log.d("AccessToken", PreferenceUtility.getAccessToken(mContext));
                 Log.d("Json", jsonObject.toString());
                 wr = new DataOutputStream(conn.getOutputStream());
                 wr.writeBytes(jsonObject.toString());
@@ -81,6 +82,7 @@ public class JSONParser {
 
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("access_token", PreferenceUtility.getAccessToken(mContext));
 
                 conn.setRequestProperty("Expect", "100-continue");
 
@@ -89,6 +91,7 @@ public class JSONParser {
 
                 conn.connect();
 
+                Log.d("AccessToken", PreferenceUtility.getAccessToken(mContext));
                 Log.d("Json", jsonObject.toString());
                 wr = new DataOutputStream(conn.getOutputStream());
                 wr.writeBytes(jsonObject.toString());

@@ -64,7 +64,7 @@
                 android:layout_below="@+id/tv_userEmail"
                 android:layout_marginTop="@dimen/pad_8"
                 android:background="@drawable/rounded_background_grey"
-                android:text="client@gmail.com"
+                android:text="jp@gmail.com"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/pad_8"
                 style="@style/SmallTextSimple"/>
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_Password"
                     android:padding="@dimen/pad_10"
-                    android:text="123456"
+                    android:text="12345678"
                     android:background="@drawable/rounded_background_grey"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
@@ -120,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_Login"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/pad_30"
+                android:padding="@dimen/pad_10"
+                android:layout_marginTop="@dimen/pad_20"
                 android:text="Forgot Password?"
                 style="@style/SmallTextBold" />
 

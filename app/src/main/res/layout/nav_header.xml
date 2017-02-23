@@ -30,23 +30,22 @@
         android:paddingRight="@dimen/nav_header_height_name_padding">
 
         <TextView
-            android:id="@+id/textView"
-            android:text="Client"
+            android:id="@+id/tv_UserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:padding="@dimen/pad_2"
+            android:padding="@dimen/pad_3"
             android:textColor="@color/colorWhite"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            style="@style/SmallTextBold"/>
 
         <TextView
-            android:id="@+id/textView3"
-            android:text="client@gmail.com"
+            android:id="@+id/tv_UserEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/pad_2"
+            android:padding="@dimen/pad_3"
             android:textColor="@color/colorWhite"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            style="@style/SmallTextBold"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -54,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/pad_2"
+            android:visibility="gone"
             android:textColor="@color/colorWhite"
             android:gravity="center_vertical"/>
     </LinearLayout>

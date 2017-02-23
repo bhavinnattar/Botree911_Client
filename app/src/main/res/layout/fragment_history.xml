@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:padding="@dimen/pad_10">
 
-    <com.srx.widget.PullToLoadView
-        android:id="@+id/pullToLoadView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_image"
-        android:layout_marginTop="@dimen/pad_5"/>
+        android:layout_marginTop="@dimen/pad_5"
+        android:layout_above="@+id/rel_comment"/>
 
 </RelativeLayout>

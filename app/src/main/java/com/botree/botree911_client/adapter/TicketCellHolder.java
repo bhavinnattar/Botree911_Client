@@ -18,6 +18,7 @@ public class TicketCellHolder extends RecyclerView.ViewHolder {
     TextView tvDescription;
     TextView tvStatus;
     TextView tvAssignee;
+    TextView tvHistory, tvComment;
     LinearLayout lnrHistory, lnrComment;
 
     public TicketCellHolder(View itemView) {
@@ -27,6 +28,8 @@ public class TicketCellHolder extends RecyclerView.ViewHolder {
         tvDescription = (TextView) itemView.findViewById(R.id.tv_description);
         tvStatus = (TextView) itemView.findViewById(R.id.tv_status);
         tvAssignee = (TextView) itemView.findViewById(R.id.tv_Assignee);
+        tvHistory = (TextView) itemView.findViewById(R.id.tv_History);
+        tvComment = (TextView) itemView.findViewById(R.id.tv_Comment);
         lnrHistory = (LinearLayout) itemView.findViewById(R.id.lnr_history);
         lnrComment = (LinearLayout) itemView.findViewById(R.id.lnr_Comment);
     }

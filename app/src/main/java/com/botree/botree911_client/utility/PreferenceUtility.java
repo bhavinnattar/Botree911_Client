@@ -14,6 +14,7 @@ public class PreferenceUtility {
     static String islogin = "islogin";
     static String email = "email";
     static String username = "username";
+    static String userid = "userid";
     static String fcmid = "fcmid";
     static String lat = "lat";
     static String lng = "lng";
@@ -73,6 +74,23 @@ public class PreferenceUtility {
 
         SharedPreferences pref = getPreference(mContext);
         return pref.getString(PreferenceUtility.email, "");
+
+    }// End of getUserEmail()
+
+    public static void saveUserId(Context mContext, String userid){
+
+        SharedPreferences pref = getPreference(mContext);
+        SharedPreferences.Editor prefEditor = pref.edit();
+
+        prefEditor.putString(PreferenceUtility.userid, userid);
+        prefEditor.commit();
+
+    }// End of saveUserEmail()
+
+    public static String getUserId(Context mContext){
+
+        SharedPreferences pref = getPreference(mContext);
+        return pref.getString(PreferenceUtility.userid, "");
 
     }// End of getUserEmail()
 

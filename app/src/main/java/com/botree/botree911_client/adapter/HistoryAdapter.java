@@ -10,6 +10,8 @@ import com.botree.botree911_client.R;
 import com.botree.botree911_client.model.Comment;
 import com.botree.botree911_client.model.History;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -20,10 +22,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryCellHolder> {
 
         List<History> mList;
         Context mContext;
-
+        SimpleDateFormat serverFormat, displayFormat;
         public HistoryAdapter(Context mContext, List<History> mList) {
             this.mContext = mContext;
             this.mList = mList;
+            serverFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
+            displayFormat = new SimpleDateFormat("MM-dd-yyyy");
         }
 
         @Override
@@ -40,9 +44,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryCellHolder> {
 
                 History history = mList.get(i);
 
-                holder.tvHistory.setText("Status changed from " + history.getLast_status() + " to " + history.getCurrent_status());
+                holder.tvHistory.setText(history.getMessage());
                 holder.tvAlertedBy.setText(history.getUser_name());
-                holder.tvDateTime.setText(history.getDate_time());
+
+                try {
+                    holder.tvDateTime.setText(displayFormat.format(serverFormat.parse(history.getDate_time())));
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
 
             }catch (Exception e){

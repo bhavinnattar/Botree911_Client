@@ -1,10 +1,8 @@
 package com.botree.botree911_client.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,26 +18,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.botree.botree911_client.R;
 import com.botree.botree911_client.adapter.ProjectAdapter;
-import com.botree.botree911_client.model.Project;
+import com.botree.botree911_client.model.ProjectOld;
 import com.botree.botree911_client.utility.Constant;
 import com.botree.botree911_client.utility.JSONParser;
 import com.botree.botree911_client.utility.PreferenceUtility;
 import com.botree.botree911_client.utility.RecyclerItemClickListener;
-import com.botree.botree911_client.utility.Utility;
 import com.srx.widget.PullCallback;
 import com.srx.widget.PullToLoadView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ProjectListActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -91,7 +85,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
 
     void getData(){
 
-        mAdapter = new ProjectAdapter(mContext, Constant.allProjects);
+        mAdapter = new ProjectAdapter(mContext, Constant.allProjectOlds);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -115,7 +109,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
         mProgressDialog.setCancelable(false);
         mProgressDialog.setIndeterminate(true);
 
-        Constant.allProjects.trimToSize();
+        Constant.allProjectOlds.trimToSize();
 
     }// End of getElements()
 
@@ -130,7 +124,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                         // do whatever
                         try{
 
-//                            Project project = Constant.allProjects.get(position);
+//                            ProjectOld project = Constant.allProjectOlds.get(position);
 //
 //                            Intent intent = new Intent(mContext, TicketListActivity.class);
 //                            intent.putExtra("projectid", project.getId());
@@ -214,8 +208,8 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
 
-        Constant.allProjects.clear();
-        Constant.allProjects.trimToSize();
+        Constant.allProjectOlds.clear();
+        Constant.allProjectOlds.trimToSize();
 //        new getAllProjects().execute();
 
         getData();
@@ -333,17 +327,17 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                         for(int i=0; i< allObjects.length(); i++){
                             JSONObject jsonObject = allObjects.getJSONObject(i);
 
-                            Project project = new Project();
-                            project.setId(""+jsonObject.getInt("id"));
-                            project.setName(""+jsonObject.getString("name"));
-                            project.setDescription(""+jsonObject.getString("description"));
-                            project.setNoOfTeam(""+jsonObject.getInt("total_member"));
+                            ProjectOld projectOld = new ProjectOld();
+                            projectOld.setId(""+jsonObject.getInt("id"));
+                            projectOld.setName(""+jsonObject.getString("name"));
+                            projectOld.setDescription(""+jsonObject.getString("description"));
+                            projectOld.setNoOfTeam(""+jsonObject.getInt("total_member"));
 
-                            Constant.allProjects.add(project);
+                            Constant.allProjectOlds.add(projectOld);
 
                         }
 
-                        mAdapter = new ProjectAdapter(mContext, Constant.allProjects);
+                        mAdapter = new ProjectAdapter(mContext, Constant.allProjectOlds);
                         mRecyclerView.setAdapter(mAdapter);
                     }
 

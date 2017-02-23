@@ -13,6 +13,8 @@ import com.botree.botree911_client.activity.TicketInfoTabActivity;
 import com.botree.botree911_client.model.Ticket;
 import com.botree.botree911_client.utility.Constant;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -23,10 +25,12 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketCellHolder> {
 
         List<Ticket> mList;
         Context mContext;
-
+        SimpleDateFormat serverFormat, displayFormat;
         public TicketAdapter(Context mContext, List<Ticket> mList) {
             this.mContext = mContext;
             this.mList = mList;
+            serverFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
+            displayFormat = new SimpleDateFormat("MM-dd-yyyy");
         }
 
         @Override
@@ -73,14 +77,22 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketCellHolder> {
                     }
                 });
 
-
+                holder.tvAssignee.setSelected(true);
 
                 Ticket ticket = mList.get(i);
 
                 holder.tvTitle.setText(ticket.getName());
                 holder.tvDescription.setText(ticket.getDescription());
-                holder.tvStatus.setText(ticket.getCreated_at());
                 holder.tvAssignee.setText(ticket.getAssingee());
+                holder.tvHistory.setText(ticket.getHistory_count());
+                holder.tvComment.setText(ticket.getComment_count());
+
+                try {
+                    holder.tvStatus.setText(displayFormat.format(serverFormat.parse(ticket.getCreated_at())));
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
             }catch (Exception e){
                 e.printStackTrace();

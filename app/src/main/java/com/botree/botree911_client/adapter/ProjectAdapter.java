@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,7 +15,7 @@ import android.widget.TextView;
 import com.botree.botree911_client.R;
 import com.botree.botree911_client.activity.ProjectInfoActivity;
 import com.botree.botree911_client.activity.TicketListActivity;
-import com.botree.botree911_client.model.Project;
+import com.botree.botree911_client.model.ProjectOld;
 import com.botree.botree911_client.utility.Constant;
 
 import org.json.JSONArray;
@@ -30,10 +29,10 @@ import java.util.List;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectCellHolder> {
 
-        List<Project> mList;
+        List<ProjectOld> mList;
         Context mContext;
 
-        public ProjectAdapter(Context mContext, List<Project> mList) {
+        public ProjectAdapter(Context mContext, List<ProjectOld> mList) {
             this.mContext = mContext;
             this.mList = mList;
         }
@@ -54,7 +53,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectCellHolder> {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN){
-                            Constant.selectedProject = Constant.allProjects.get(position);
+                            Constant.selectedProjectOld = Constant.allProjectOlds.get(position);
                             actvityInfo();
                         }
                         v.getParent().requestDisallowInterceptTouchEvent(true);
@@ -66,23 +65,23 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectCellHolder> {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN){
-                            Constant.selectedProject = Constant.allProjects.get(position);
+                            Constant.selectedProjectOld = Constant.allProjectOlds.get(position);
 
-                            allTickets("pending", Constant.selectedProject.getId());
+                            allTickets("pending", Constant.selectedProjectOld.getId());
                         }
                         v.getParent().requestDisallowInterceptTouchEvent(true);
                         return true;
                     }
                 });
 
-                Project project = mList.get(position);
+                ProjectOld projectOld = mList.get(position);
 
-                holder.tvTitle.setText(project.getName());
-                holder.tvDescription.setText(project.getSpocPerson());
-                holder.tvNoOfTeam.setText(project.getNoOfTeam());
-                holder.tvStartDate.setText(project.getStartDate());
+                holder.tvTitle.setText(projectOld.getName());
+                holder.tvDescription.setText(projectOld.getSpocPerson());
+                holder.tvNoOfTeam.setText(projectOld.getNoOfTeam());
+                holder.tvStartDate.setText(projectOld.getStartDate());
 
-                getAllStatus(holder.lnrTicketStatus, project.getTicketStatus(), project.getId());
+                getAllStatus(holder.lnrTicketStatus, projectOld.getTicketStatus(), projectOld.getId());
 
 
             }catch (Exception e){
