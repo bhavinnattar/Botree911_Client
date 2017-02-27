@@ -26,10 +26,12 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import com.botree.botree911_client.R;
 import com.botree.botree911_client.activity.SplashActivity;
+import com.botree.botree911_client.utility.PreferenceUtility;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -67,7 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject jsonObject = new JSONObject(remoteMessage.getData());
             Log.d("JsonData", jsonObject.toString());
 
-            sendNotification(jsonObject.optString("title"), jsonObject.optString("body"));
+            sendNotification(jsonObject.optString("title"), jsonObject.optString("message"));
 
         }
 
@@ -87,24 +89,38 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String title, String messageBody) {
+        int count = PreferenceUtility.getNoticationCount(MyFirebaseMessagingService.this);
+        PreferenceUtility.saveNotificationCount(MyFirebaseMessagingService.this, (count+1));
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+        bigTextStyle.setBigContentTitle(title);
+        bigTextStyle.bigText(messageBody);
+
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+            notificationBuilder.setSmallIcon(R.drawable.ic_stat_name);
+            notificationBuilder.setColor(ResourcesCompat.getColor(getResources(),R.color.colorGreenLight, null));
+        }else{
+            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        }
+
+        notificationBuilder.setContentTitle(title);
+        notificationBuilder.setContentText(messageBody);
+        notificationBuilder.setStyle(bigTextStyle);
+        notificationBuilder.setAutoCancel(true);
+        notificationBuilder.setSound(defaultSoundUri);
+        notificationBuilder.setContentIntent(pendingIntent);
+
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(count /* ID of notification */, notificationBuilder.build());
     }
 }
 

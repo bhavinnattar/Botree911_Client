@@ -1,0 +1,58 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="splash_img_size">300dp</dimen>
+    <dimen name="pad_10">10dp</dimen>
+    <dimen name="pad_8">4dp</dimen>
+    <dimen name="pad_6">6dp</dimen>
+    <dimen name="img_90">90dp</dimen>
+    <dimen name="pad_40">40dp</dimen>
+    <dimen name="pad_50">40dp</dimen>
+    <dimen name="pad_16">16dp</dimen>
+    <dimen name="pad_5">2dp</dimen>
+    <dimen name="pad_60">50dp</dimen>
+    <dimen name="pad_2">2dp</dimen>
+    <dimen name="pad_12">12dp</dimen>
+    <dimen name="pad_14">5dp</dimen>
+    <dimen name="pad_20">20dp</dimen>
+    <dimen name="pad_25">25dp</dimen>
+    <dimen name="pad_3">3dp</dimen>
+    <dimen name="pad_30">30dp</dimen>
+    <dimen name="pad_100">100dp</dimen>
+    <dimen name="pad_120">120dp</dimen>
+
+    <dimen name="nav_header_height">100dp</dimen>
+    <dimen name="nav_header_height_padding">10dp</dimen>
+    <dimen name="nav_header_height_margintop">15dp</dimen>
+    <dimen name="nav_header_height_marginleft">10dp</dimen>
+    <dimen name="nav_header_height_name">170dp</dimen>
+    <dimen name="nav_header_height_name_padding">3dp</dimen>
+
+    <dimen name="profile_image_size">60dp</dimen>
+    <dimen name="setting_image_size">50dp</dimen>
+
+    <dimen name="nav_menu_image_size">35dp</dimen>
+    <dimen name="nav_accountmenu_size">220dp</dimen>
+    <dimen name="nav_menu_size_margin">15dp</dimen>
+    <dimen name="nav_menu_size_marginleft">25dp</dimen>
+    <dimen name="nav_menu_size_padding">5dp</dimen>
+    <dimen name="nav_refreshmenu_size_padding">8dp</dimen>
+    <dimen name="pad_1">1dp</dimen>
+    <dimen name="pad_80">80dp</dimen>
+    <dimen name="pad_9">9dp</dimen>
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="sp_11">11sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_13">13sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="pad_4">4dp</dimen>
+    <dimen name="pad_125">125dp</dimen>
+    <dimen name="pad_115">115dp</dimen>
+    <dimen name="pad_75">75dp</dimen>
+    <dimen name="pad_72">72dp</dimen>
+    <dimen name="pad_115dp">115dp</dimen>
+    <dimen name="pad_70">70dp</dimen>
+
+
+</resources>

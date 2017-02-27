@@ -17,7 +17,9 @@ public class Constant {
     public static String holder_type = "client";
 
     public static String baseURL = "http://192.168.0.86:3000"; // Local
+//    public static String baseURL = "https://botree911.herokuapp.com"; // Live
     public static String loginURL = baseURL + "/users/sign_in";
+
     public static String forgotPasswordURL = baseURL + "/users/reset_password";
     public static String allProjectURL = baseURL + "/projects/list";
     public static String allTicketURL = baseURL + "/tickets/list";

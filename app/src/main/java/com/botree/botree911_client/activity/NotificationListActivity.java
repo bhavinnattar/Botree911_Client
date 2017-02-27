@@ -49,7 +49,6 @@ public class NotificationListActivity extends AppCompatActivity implements View.
     ImageView ivMenu;
     TextView tvTitle;
 
-    private PullToLoadView mPullToLoadView;
     ArrayList<LocalNotification> allNotification;
     RecyclerView mRecyclerView;
     NotificationAdapter mAdapter;
@@ -93,9 +92,7 @@ public class NotificationListActivity extends AppCompatActivity implements View.
 
         mContext = this;
 
-        mPullToLoadView = (PullToLoadView) findViewById(R.id.pullToLoadView);
-
-        mRecyclerView = mPullToLoadView.getRecyclerView();
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);

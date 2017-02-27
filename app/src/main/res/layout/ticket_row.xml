@@ -91,7 +91,8 @@
                     android:layout_height="@dimen/pad_16"
                     android:layout_marginLeft="@dimen/pad_5"
                     android:src="@drawable/assignee"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"/>
 
                 <TextView
                     android:id="@+id/tv_Assignee"

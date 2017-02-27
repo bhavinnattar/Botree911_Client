@@ -2,7 +2,6 @@ package com.botree.botree911_client.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +23,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentCellHolder> {
         List<Comment> mList;
         Context mContext;
         SimpleDateFormat serverFormat, displayFormat;
+        String userId;
         public CommentAdapter(Context mContext, List<Comment> mList) {
             this.mContext = mContext;
             this.mList = mList;
             serverFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
             displayFormat = new SimpleDateFormat("MM-dd-yyyy");
+            userId = PreferenceUtility.getUserId(mContext);
         }
 
         @Override
@@ -57,8 +58,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentCellHolder> {
 
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.getView().getLayoutParams();
 
-                if(comment.getUser_id().equalsIgnoreCase(PreferenceUtility.getUserId(mContext
-                ))){
+                if(comment.getUser_id().equalsIgnoreCase(userId)){
                     params.leftMargin = 70;
                 }else{
                     params.rightMargin = 70;

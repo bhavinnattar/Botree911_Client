@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="splash_img_size">300dp</dimen>
-    <dimen name="pad_10">10dp</dimen>
+    <dimen name="pad_10">6dp</dimen>
     <dimen name="pad_8">8dp</dimen>
     <dimen name="pad_6">6dp</dimen>
     <dimen name="img_90">90dp</dimen>

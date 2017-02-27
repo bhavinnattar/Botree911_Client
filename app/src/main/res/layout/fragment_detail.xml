@@ -100,7 +100,6 @@
             android:id="@+id/tvEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/pad_10"
             android:layout_marginTop="@dimen/pad_16"
             android:background="@drawable/click_button"
             android:layout_below="@+id/et_TicketDescription"

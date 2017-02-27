@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,8 +66,9 @@ public class CommentsFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
-        LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(manager);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setReverseLayout(true);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage(getString(R.string.please_wait));
@@ -188,6 +190,8 @@ public class CommentsFragment extends Fragment {
                             mList.add(comment);
 
                         }
+
+//                        Collections.reverse(mList);
 
                         mAdapter = new CommentAdapter(mContext, mList);
                         mRecyclerView.setAdapter(mAdapter);

@@ -18,6 +18,7 @@ public class PreferenceUtility {
     static String fcmid = "fcmid";
     static String lat = "lat";
     static String lng = "lng";
+    static String noticount = "noticount";
 
     static SharedPreferences getPreference(Context mContext){
 
@@ -25,6 +26,23 @@ public class PreferenceUtility {
         return pref;
 
     }// End of getPreference()
+
+    public static int getNoticationCount(Context mContext){
+
+        SharedPreferences pref = getPreference(mContext);
+        return pref.getInt(noticount, 1);
+
+    }// End of getNotificationCount()
+
+    public static void saveNotificationCount(Context mContext, int count){
+
+        SharedPreferences pref = getPreference(mContext);
+        SharedPreferences.Editor prefEditor = pref.edit();
+
+        prefEditor.putInt(noticount, count);
+        prefEditor.commit();
+
+    }// End of saveNotificationCount()
 
     public static void saveIsLogin(Context mContext, boolean isLogin){
 

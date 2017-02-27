@@ -178,10 +178,14 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         if(fieldValidation(etTicketName.getText().toString().trim(),
                 etDescription.getText().toString().trim())){
             if(Utility.isOnline(mContext)){
-                new EditTicket().execute(allProject.get(spnrProjects.getSelectedItemPosition()).getId(),
-                        etTicketName.getText().toString().trim(),
-                        etDescription.getText().toString().trim(),
-                        allStatus.get(spnrStatus.getSelectedItemPosition()).getStatusValue());
+                if(allStatus.get(spnrStatus.getSelectedItemPosition()).getStatusName().equalsIgnoreCase("resolved")){
+                    Utility.displayMessage(mContext, "Client cannot mark ticket issue type \"Resolved\"");
+                }else{
+                    new EditTicket().execute(allProject.get(spnrProjects.getSelectedItemPosition()).getId(),
+                            etTicketName.getText().toString().trim(),
+                            etDescription.getText().toString().trim(),
+                            allStatus.get(spnrStatus.getSelectedItemPosition()).getStatusValue());
+                }
             }else{
                 Utility.displayMessage(mContext, getString(R.string.internet_error));
             }
